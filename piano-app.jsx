@@ -1,0 +1,489 @@
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import * as Tone from "tone";
+
+const NN = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const m2n = m => ({note:NN[m%12],oct:Math.floor(m/12)-1});
+const isBk = m => [1,3,6,8,10].includes(m%12);
+const BKO = {1:.58,3:1.72,6:3.58,8:4.68,10:5.78};
+const WI = [0,2,4,5,7,9,11];
+const LEAD = 3;
+
+const SONGS = [
+  { id:"twinkle", title:"반짝반짝 작은 별", sub:"Twinkle Twinkle Little Star", bpm:100, diff:"쉬움", dc:"#4ade80",
+    notes:[
+      {m:60,t:0,d:.5},{m:60,t:.5,d:.5},{m:67,t:1,d:.5},{m:67,t:1.5,d:.5},{m:69,t:2,d:.5},{m:69,t:2.5,d:.5},{m:67,t:3,d:1},
+      {m:65,t:4,d:.5},{m:65,t:4.5,d:.5},{m:64,t:5,d:.5},{m:64,t:5.5,d:.5},{m:62,t:6,d:.5},{m:62,t:6.5,d:.5},{m:60,t:7,d:1},
+      {m:67,t:8,d:.5},{m:67,t:8.5,d:.5},{m:65,t:9,d:.5},{m:65,t:9.5,d:.5},{m:64,t:10,d:.5},{m:64,t:10.5,d:.5},{m:62,t:11,d:1},
+      {m:67,t:12,d:.5},{m:67,t:12.5,d:.5},{m:65,t:13,d:.5},{m:65,t:13.5,d:.5},{m:64,t:14,d:.5},{m:64,t:14.5,d:.5},{m:62,t:15,d:1},
+      {m:60,t:16,d:.5},{m:60,t:16.5,d:.5},{m:67,t:17,d:.5},{m:67,t:17.5,d:.5},{m:69,t:18,d:.5},{m:69,t:18.5,d:.5},{m:67,t:19,d:1},
+      {m:65,t:20,d:.5},{m:65,t:20.5,d:.5},{m:64,t:21,d:.5},{m:64,t:21.5,d:.5},{m:62,t:22,d:.5},{m:62,t:22.5,d:.5},{m:60,t:23,d:1},
+    ]},
+  { id:"ode", title:"환희의 송가", sub:"Ode to Joy — Beethoven", bpm:108, diff:"보통", dc:"#facc15",
+    notes:[
+      {m:64,t:0,d:.5},{m:64,t:.5,d:.5},{m:65,t:1,d:.5},{m:67,t:1.5,d:.5},{m:67,t:2,d:.5},{m:65,t:2.5,d:.5},{m:64,t:3,d:.5},{m:62,t:3.5,d:.5},
+      {m:60,t:4,d:.5},{m:60,t:4.5,d:.5},{m:62,t:5,d:.5},{m:64,t:5.5,d:.5},{m:64,t:6,d:.75},{m:62,t:6.75,d:.25},{m:62,t:7,d:1},
+      {m:64,t:8,d:.5},{m:64,t:8.5,d:.5},{m:65,t:9,d:.5},{m:67,t:9.5,d:.5},{m:67,t:10,d:.5},{m:65,t:10.5,d:.5},{m:64,t:11,d:.5},{m:62,t:11.5,d:.5},
+      {m:60,t:12,d:.5},{m:60,t:12.5,d:.5},{m:62,t:13,d:.5},{m:64,t:13.5,d:.5},{m:62,t:14,d:.75},{m:60,t:14.75,d:.25},{m:60,t:15,d:1},
+    ]},
+  { id:"canon", title:"캐논 변주곡", sub:"Canon in D — Pachelbel", bpm:72, diff:"보통", dc:"#60a5fa",
+    notes:[
+      {m:74,t:0,d:1},{m:73,t:1,d:1},{m:74,t:2,d:1},{m:69,t:3,d:1},{m:71,t:4,d:1},{m:67,t:5,d:1},{m:71,t:6,d:1},{m:73,t:7,d:1},
+      {m:74,t:8,d:.5},{m:71,t:8.5,d:.5},{m:74,t:9,d:.5},{m:76,t:9.5,d:.5},{m:73,t:10,d:.5},{m:71,t:10.5,d:.5},{m:73,t:11,d:.5},{m:69,t:11.5,d:.5},
+      {m:71,t:12,d:.5},{m:67,t:12.5,d:.5},{m:71,t:13,d:.5},{m:69,t:13.5,d:.5},{m:71,t:14,d:.5},{m:73,t:14.5,d:.5},{m:74,t:15,d:1},
+    ]},
+  { id:"fur_elise", title:"엘리제를 위하여", sub:"Für Elise — Beethoven", bpm:130, diff:"어려움", dc:"#f87171",
+    notes:[
+      {m:76,t:0,d:.25},{m:75,t:.25,d:.25},{m:76,t:.5,d:.25},{m:75,t:.75,d:.25},{m:76,t:1,d:.25},{m:71,t:1.25,d:.25},{m:74,t:1.5,d:.25},{m:72,t:1.75,d:.25},
+      {m:69,t:2,d:.5},{m:60,t:2.5,d:.25},{m:64,t:2.75,d:.25},{m:69,t:3,d:.25},{m:71,t:3.25,d:.5},{m:64,t:3.75,d:.25},
+      {m:68,t:4,d:.25},{m:71,t:4.25,d:.25},{m:72,t:4.5,d:.5},{m:64,t:5,d:.25},{m:76,t:5.25,d:.25},{m:75,t:5.5,d:.25},{m:76,t:5.75,d:.25},
+      {m:75,t:6,d:.25},{m:76,t:6.25,d:.25},{m:71,t:6.5,d:.25},{m:74,t:6.75,d:.25},{m:72,t:7,d:.25},{m:69,t:7.25,d:.5},{m:60,t:7.75,d:.25},
+      {m:64,t:8,d:.25},{m:69,t:8.25,d:.25},{m:71,t:8.5,d:.5},{m:64,t:9,d:.25},{m:72,t:9.25,d:.25},{m:71,t:9.5,d:.25},{m:69,t:9.75,d:.5},
+    ]},
+  { id:"minuet", title:"미뉴에트 G장조", sub:"Minuet in G — Bach", bpm:110, diff:"보통", dc:"#c084fc",
+    notes:[
+      {m:67,t:0,d:.5},{m:66,t:.5,d:.25},{m:64,t:.75,d:.25},{m:62,t:1,d:.25},{m:60,t:1.25,d:.25},{m:62,t:1.5,d:.5},{m:67,t:2,d:.5},{m:67,t:2.5,d:.5},
+      {m:69,t:3,d:.5},{m:66,t:3.5,d:.25},{m:69,t:3.75,d:.25},{m:71,t:4,d:.25},{m:69,t:4.25,d:.25},{m:67,t:4.5,d:.5},{m:66,t:5,d:.5},{m:64,t:5.5,d:.5},
+      {m:62,t:6,d:.5},{m:60,t:6.5,d:.25},{m:62,t:6.75,d:.25},{m:64,t:7,d:.25},{m:62,t:7.25,d:.25},{m:60,t:7.5,d:.25},{m:59,t:7.75,d:.25},{m:60,t:8,d:1},
+    ]},
+];
+
+const nClr = m => {
+  const colors = ["#ff6b6b","#ff8e53","#feca57","#48dbfb","#0abde3","#1dd1a1","#55efc4","#a29bfe","#6c5ce7","#fd79a8","#e84393","#f8a5c2"];
+  return colors[m % 12];
+};
+const JW = {perfect:.12,great:.22,good:.38};
+const JC = {perfect:"#00f5d4",great:"#fee440",good:"#a78bfa",miss:"#f43f5e"};
+const JT = {perfect:"PERFECT",great:"GREAT",good:"GOOD",miss:"MISS"};
+
+export default function App() {
+  const [view, setView] = useState("menu");
+  const [sid, setSid] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [pressed, setPressed] = useState({});
+  const [playing, setPlaying] = useState(false);
+  const [cd, setCd] = useState(null);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMC] = useState(0);
+  const [judges, setJudges] = useState({perfect:0,great:0,good:0,miss:0});
+  const [ja, setJA] = useState(null);
+  const [showStart, setSS] = useState(true);
+  const [gt, setGt] = useState(-LEAD);
+
+  const pianoRef = useRef(null);
+  const toneStarted = useRef(false);
+  const t0 = useRef(0);
+  const raf = useRef(0);
+  const scR = useRef(0), cbR = useRef(0), mcR = useRef(0);
+  const jdR = useRef({perfect:0,great:0,good:0,miss:0});
+  const hnR = useRef(new Set());
+  const ptrs = useRef(new Map());
+  const cdRef = useRef(null);
+  const scrollRef = useRef(null);
+  const pinchRef = useRef({dist:0,zoom:1});
+  const playR = useRef(false);
+  const gtR = useRef(-LEAD);
+
+  // Tone.js 피아노 초기화
+  const initPiano = useCallback(async () => {
+    if (pianoRef.current) return;
+    await Tone.start();
+    toneStarted.current = true;
+
+    // 리버브
+    const reverb = new Tone.Reverb({ decay: 1.5, wet: 0.2 }).toDestination();
+
+    // 피아노 음색 합성
+    pianoRef.current = new Tone.PolySynth(Tone.Synth, {
+      maxPolyphony: 16,
+      voice: Tone.Synth,
+      options: {
+        oscillator: {
+          type: "fmtriangle",
+          modulationType: "sine",
+          modulationIndex: 2,
+          harmonicity: 3.01,
+        },
+        envelope: {
+          attack: 0.005,
+          decay: 1.2,
+          sustain: 0.15,
+          release: 1.5,
+        },
+        volume: -6,
+      }
+    }).connect(reverb);
+  }, []);
+
+  const playSound = useCallback(async (midi) => {
+    try {
+      if (!toneStarted.current) await initPiano();
+      if (!pianoRef.current) return;
+      const { note, oct } = m2n(midi);
+      const noteName = `${note}${oct}`;
+      pianoRef.current.triggerAttackRelease(noteName, "8n");
+    } catch(e) {}
+  }, [initPiano]);
+
+  const startMidi=36, endMidi=96;
+  const keys=useMemo(()=>{const a=[];for(let m=startMidi;m<=endMidi;m++)a.push({midi:m,...m2n(m),black:isBk(m)});return a;},[]);
+  const whites=useMemo(()=>keys.filter(k=>!k.black),[keys]);
+  const blacks=useMemo(()=>keys.filter(k=>k.black),[keys]);
+
+  const kw=42*zoom, bkw=26*zoom, kh=150*zoom, bkh=95*zoom;
+  const totalW=whites.length*kw;
+  const PPS = 150; // pixels per second — 줌과 무관하게 고정
+
+  const getKeyX=useCallback((midi)=>{
+    const{note,oct}=m2n(midi),ni=NN.indexOf(note),oo=oct-m2n(startMidi).oct;
+    if(isBk(midi))return(oo*7+BKO[ni])*kw+(kw-bkw)/2;
+    return(oo*7+WI.indexOf(ni))*kw;
+  },[kw,bkw]);
+
+  const hitKey=useCallback((midi)=>{
+    setPressed(p=>({...p,[midi]:Date.now()}));
+    playSound(midi);
+    if(playR.current&&sid){
+      const song=SONGS.find(s=>s.id===sid),ct=gtR.current;
+      let bd=Infinity,bi=-1;
+      song.notes.forEach((n,i)=>{if(hnR.current.has(i)||n.m!==midi)return;const d=Math.abs(ct-n.t);if(d<bd){bd=d;bi=i;}});
+      if(bi>=0&&bd<=JW.good){
+        let j,pt;
+        if(bd<=JW.perfect){j="perfect";pt=100;}else if(bd<=JW.great){j="great";pt=70;}else{j="good";pt=40;}
+        hnR.current.add(bi);cbR.current++;if(cbR.current>mcR.current)mcR.current=cbR.current;
+        scR.current+=pt+Math.floor(cbR.current/10)*10;
+        jdR.current={...jdR.current,[j]:jdR.current[j]+1};
+        setScore(scR.current);setCombo(cbR.current);setMC(mcR.current);
+        setJudges({...jdR.current});setJA({type:j,key:Date.now()});
+      }
+    }
+  },[sid,playSound]);
+
+  const releaseKey=useCallback(midi=>{setPressed(p=>{const n={...p};delete n[midi];return n});},[]);
+  const onPD=useCallback(e=>{e.preventDefault();const m=+e.currentTarget.dataset.midi;if(!isNaN(m)){ptrs.current.set(e.pointerId,m);hitKey(m);}},[hitKey]);
+  const onPU=useCallback(e=>{const m=ptrs.current.get(e.pointerId);if(m!==undefined){ptrs.current.delete(e.pointerId);releaseKey(m);}},[releaseKey]);
+
+  // 핀치 줌
+  const onTS=useCallback(e=>{
+    if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      pinchRef.current={dist:Math.hypot(dx,dy),zoom};
+    }
+  },[zoom]);
+  const onTM=useCallback(e=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const r=Math.hypot(dx,dy)/(pinchRef.current.dist||1);
+      setZoom(Math.max(.4,Math.min(2.5,Math.round(pinchRef.current.zoom*r*100)/100)));
+    }
+  },[]);
+
+  const startSong=useCallback(()=>{
+    scR.current=0;cbR.current=0;mcR.current=0;
+    jdR.current={perfect:0,great:0,good:0,miss:0};hnR.current=new Set();
+    setScore(0);setCombo(0);setMC(0);setJudges({perfect:0,great:0,good:0,miss:0});
+    setJA(null);setSS(false);gtR.current=-LEAD;setGt(-LEAD);
+
+    setCd(3);let c=3;
+    cdRef.current=setInterval(()=>{
+      c--;if(c>0){setCd(c);}
+      else{
+        clearInterval(cdRef.current);setCd(null);
+        setPlaying(true);playR.current=true;
+        t0.current=performance.now();
+        const song=SONGS.find(s=>s.id===sid);
+        const songEnd=song.notes[song.notes.length-1].t+song.notes[song.notes.length-1].d+2;
+        const tick=()=>{
+          const ct=(performance.now()-t0.current)/1000-LEAD;
+          gtR.current=ct;setGt(ct);
+          song.notes.forEach((n,i)=>{
+            if(hnR.current.has(i))return;
+            if(ct>n.t+.55){
+              hnR.current.add(i);cbR.current=0;
+              jdR.current={...jdR.current,miss:jdR.current.miss+1};
+              setCombo(0);setJudges({...jdR.current});setJA({type:"miss",key:Date.now()});
+            }
+          });
+          if(ct<songEnd)raf.current=requestAnimationFrame(tick);
+          else{setPlaying(false);playR.current=false;setView("result");}
+        };
+        raf.current=requestAnimationFrame(tick);
+      }
+    },800);
+  },[sid]);
+
+  const stopGame=useCallback(()=>{
+    setPlaying(false);playR.current=false;setCd(null);setSS(true);
+    if(raf.current)cancelAnimationFrame(raf.current);
+    if(cdRef.current)clearInterval(cdRef.current);
+  },[]);
+
+  useEffect(()=>()=>stopGame(),[stopGame]);
+  useEffect(()=>{
+    if(view==="play"){
+      initPiano(); // Tone.js 초기화
+      if(scrollRef.current){
+        const t=sid?SONGS.find(s=>s.id===sid)?.notes[0]?.m||60:60;
+        scrollRef.current.scrollLeft=Math.max(0,getKeyX(t)-scrollRef.current.clientWidth/2);
+      }
+    }
+  },[view,zoom,sid,getKeyX,initPiano]);
+
+  const isActive = playing || cd!==null;
+
+  /* ══ MENU ══ */
+  if(view==="menu") return(
+    <div style={{minHeight:"100dvh",background:"linear-gradient(170deg,#06061a,#10082a 50%,#081420)",color:"#fff",fontFamily:"'Noto Sans KR',sans-serif",overflowY:"auto"}}>
+      <style>{CSS}</style>
+      <header style={{textAlign:"center",padding:"max(32px,env(safe-area-inset-top)) 20px 8px"}}>
+        <div style={{fontSize:42}}>🎹</div>
+        <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(28px,7vw,44px)",fontWeight:900,background:"linear-gradient(135deg,#00f5d4,#7b61ff,#f43f5e)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",margin:0}}>Piano Master</h1>
+        <p style={{color:"#555",fontSize:12,marginTop:6}}>터치하여 클래식 명곡을 연주하세요</p>
+      </header>
+      <div style={{padding:"8px 14px",maxWidth:480,margin:"0 auto"}}>
+        {SONGS.map((s,i)=>(
+          <button key={s.id} className="card" style={{animationDelay:`${i*.06}s`}}
+            onClick={()=>{setSid(s.id);setSS(true);setView("play")}}>
+            <div style={{width:42,height:42,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,background:`${s.dc}15`,border:`1px solid ${s.dc}30`}}>🎵</div>
+            <div style={{flex:1,textAlign:"left",minWidth:0}}>
+              <div style={{fontWeight:700,fontSize:14}}>{s.title}</div>
+              <div style={{color:"#666",fontSize:10,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.sub}</div>
+              <div style={{display:"flex",gap:5,marginTop:3}}>
+                <span style={{fontSize:9,padding:"1px 7px",borderRadius:20,background:`${s.dc}15`,color:s.dc,border:`1px solid ${s.dc}35`}}>{s.diff}</span>
+                <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,color:"#555",background:"rgba(255,255,255,.03)"}}>♩{s.bpm}</span>
+              </div>
+            </div>
+            <span style={{color:"#333"}}>›</span>
+          </button>
+        ))}
+        <button className="card" style={{animationDelay:`${SONGS.length*.06}s`,borderColor:"#00f5d418"}}
+          onClick={()=>{setSid(null);setSS(false);setView("play")}}>
+          <div style={{width:42,height:42,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,background:"#00f5d410",border:"1px solid #00f5d425"}}>🎹</div>
+          <div style={{flex:1,textAlign:"left"}}><div style={{fontWeight:700,fontSize:14}}>자유 연주</div><div style={{color:"#666",fontSize:10}}>Free Play</div></div>
+          <span style={{color:"#333"}}>›</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  /* ══ RESULT ══ */
+  if(view==="result"){
+    const song=SONGS.find(s=>s.id===sid),total=song?.notes.length||1;
+    const acc=Math.round(((judges.perfect*100+judges.great*70+judges.good*40)/(total*100))*100);
+    let grade="F",gc="#555";
+    if(acc>=95){grade="S";gc="#00f5d4";}else if(acc>=85){grade="A";gc="#fee440";}
+    else if(acc>=70){grade="B";gc="#a78bfa";}else if(acc>=55){grade="C";gc="#f97316";}
+    else if(acc>=40){grade="D";gc="#f43f5e";}
+    return(
+      <div style={{minHeight:"100dvh",background:"linear-gradient(170deg,#06061a,#10082a 50%,#081420)",color:"#fff",fontFamily:"'Noto Sans KR',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px 16px"}}>
+        <style>{CSS}</style>
+        <div className="scaleIn" style={{width:110,height:110,borderRadius:"50%",border:`3px solid ${gc}`,background:`${gc}10`,boxShadow:`0 0 60px ${gc}20`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{fontFamily:"'Playfair Display',serif",fontSize:56,fontWeight:900,color:gc}}>{grade}</span>
+        </div>
+        <h2 style={{fontWeight:700,fontSize:19,marginTop:16}}>{song?.title}</h2>
+        <p style={{color:"#666",fontSize:12,margin:"4px 0 20px"}}>정확도 {acc}%</p>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,width:"100%",maxWidth:320}}>
+          <div style={{background:"rgba(255,255,255,.04)",borderRadius:12,padding:10,textAlign:"center"}}><div style={{fontSize:24,fontWeight:900,color:"#00f5d4"}}>{score.toLocaleString()}</div><div style={{fontSize:9,color:"#555"}}>SCORE</div></div>
+          <div style={{background:"rgba(255,255,255,.04)",borderRadius:12,padding:10,textAlign:"center"}}><div style={{fontSize:24,fontWeight:900,color:"#fee440"}}>{maxCombo}x</div><div style={{fontSize:9,color:"#555"}}>MAX COMBO</div></div>
+          {["perfect","great","good","miss"].map(k=>(
+            <div key={k} style={{background:"rgba(255,255,255,.025)",borderRadius:10,padding:"7px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{color:JC[k],fontWeight:700,fontSize:11}}>{JT[k]}</span><span style={{fontWeight:800,fontSize:15}}>{judges[k]}</span></div>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:10,marginTop:24}}>
+          <button onClick={()=>{setView("play");setSS(false);setTimeout(startSong,200)}} style={{padding:"10px 22px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#7b61ff,#5a3fd4)",color:"#fff",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>🔄 다시</button>
+          <button onClick={()=>{stopGame();setView("menu")}} style={{padding:"10px 22px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.04)",color:"#ddd",fontWeight:600,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>📋 곡 선택</button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ══════════════════════════════════════════════
+     🎹 PLAY SCREEN — 핵심: 단일 스크롤 컨테이너!
+     건반과 떨어지는 노트가 같은 스크롤 안에 있음
+     ══════════════════════════════════════════════ */
+  const song = sid ? SONGS.find(s=>s.id===sid) : null;
+
+  return(
+    <div style={{height:"100dvh",background:"#08080e",color:"#fff",fontFamily:"'Noto Sans KR',sans-serif",display:"flex",flexDirection:"column",overflow:"hidden",userSelect:"none",WebkitUserSelect:"none"}}
+      onTouchStart={onTS} onTouchMove={onTM}>
+      <style>{CSS}</style>
+
+      {/* 상단바 */}
+      <div style={{display:"flex",alignItems:"center",padding:"max(4px,env(safe-area-inset-top)) 8px 4px",background:"rgba(0,0,0,.7)",borderBottom:"1px solid rgba(255,255,255,.04)",flexShrink:0,zIndex:100,gap:4}}>
+        <button onClick={()=>{stopGame();setView("menu")}} style={{background:"rgba(255,255,255,.06)",border:"none",color:"#999",borderRadius:8,width:30,height:30,fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+        <div style={{flex:1,textAlign:"center"}}><span style={{fontSize:12,fontWeight:600,color:"#bbb"}}>{song?.title||"자유 연주"}</span></div>
+        <div style={{display:"flex",alignItems:"center",gap:3}}>
+          <button onClick={()=>setZoom(z=>Math.max(.5,+(z-.15).toFixed(2)))} style={{background:"rgba(255,255,255,.06)",border:"none",color:"#ccc",borderRadius:7,width:28,height:28,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
+          <span style={{fontSize:9,color:"#555",width:30,textAlign:"center"}}>{Math.round(zoom*100)}%</span>
+          <button onClick={()=>setZoom(z=>Math.min(2.5,+(z+.15).toFixed(2)))} style={{background:"rgba(255,255,255,.06)",border:"none",color:"#ccc",borderRadius:7,width:28,height:28,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
+        </div>
+      </div>
+
+      {/* 점수바 */}
+      {song&&(
+        <div style={{display:"flex",alignItems:"center",padding:"2px 8px",background:"rgba(0,0,0,.4)",flexShrink:0}}>
+          <div style={{textAlign:"center",width:56}}>
+            <div style={{fontSize:8,color:"#444",letterSpacing:1.5,fontWeight:600}}>SCORE</div>
+            <div style={{fontSize:15,fontWeight:900,color:"#00f5d4"}}>{score.toLocaleString()}</div>
+          </div>
+          <div style={{flex:1,textAlign:"center",minHeight:28,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {ja&&<div key={ja.key} className="popJ" style={{color:JC[ja.type],fontWeight:900,fontSize:18,letterSpacing:2,textShadow:`0 0 14px ${JC[ja.type]}55`}}>{JT[ja.type]}</div>}
+          </div>
+          <div style={{textAlign:"center",width:56}}>
+            <div style={{fontSize:8,color:"#444",letterSpacing:1.5,fontWeight:600}}>COMBO</div>
+            <div style={{fontSize:15,fontWeight:900,color:combo>=10?"#fee440":"#aaa"}}>{combo}x</div>
+          </div>
+        </div>
+      )}
+
+      {/* ★★★ 메인 영역: 하나의 스크롤 컨테이너 안에 모든 것! ★★★ */}
+      <div ref={scrollRef} style={{
+        flex: 1,
+        overflowX: "auto",
+        overflowY: "hidden",
+        position: "relative",
+        WebkitOverflowScrolling: "touch",
+      }}>
+        {/* 전체 넓이를 가진 내부 컨테이너 - 높이는 100% */}
+        <div style={{
+          width: totalW,
+          height: "100%",
+          position: "relative",
+        }}>
+
+          {/* ── 가이드라인 (판정선): 건반 바로 위 ── */}
+          <div style={{
+            position:"absolute",
+            bottom: kh,
+            left: 0,
+            width: totalW,
+            height: 3,
+            background:"linear-gradient(90deg,#00f5d400,#00f5d4cc 10%,#00f5d4 50%,#00f5d4cc 90%,#00f5d400)",
+            zIndex: 40,
+            boxShadow:"0 0 12px #00f5d455, 0 -4px 20px #00f5d418",
+          }}/>
+
+          {/* ── 떨어지는 노트들! ── 
+              핵심: bottom = kh + timeUntil * PPS
+              timeUntil > 0 → 건반 위 (아직 안 내려옴)
+              timeUntil = 0 → 가이드라인 위치 (치는 타이밍)
+              timeUntil < 0 → 건반 아래 (놓침)
+          */}
+          {song && isActive && song.notes.map((n, i) => {
+            if(hnR.current.has(i)) return null;
+            const timeUntil = n.t - gt;
+            if(timeUntil > 6 || timeUntil < -1) return null;
+
+            const x = getKeyX(n.m);
+            const ib = isBk(n.m);
+            const w = ib ? bkw - 2 : kw - 4;
+            const h = Math.max(n.d * PPS, 16);
+            const bot = kh + timeUntil * PPS;
+            const clr = nClr(n.m);
+
+            return <div key={`n${i}`} style={{
+              position: "absolute",
+              left: x + (ib ? 1 : 2),
+              bottom: bot,
+              width: w,
+              height: h,
+              background: `linear-gradient(180deg, ${clr}, ${clr}aa)`,
+              borderRadius: 6,
+              border: `2px solid ${clr}`,
+              boxShadow: `0 0 14px ${clr}66, inset 0 2px 0 rgba(255,255,255,.3)`,
+              zIndex: ib ? 35 : 25,
+              pointerEvents: "none",
+              opacity: timeUntil < 0 ? Math.max(0, 1+timeUntil*3) : 1,
+            }}/>;
+          })}
+
+          {/* ── 흰 건반 ── */}
+          {whites.map((k,i)=>{
+            const isP=!!pressed[k.midi];
+            return <div key={k.midi} data-midi={k.midi}
+              onPointerDown={onPD} onPointerUp={onPU} onPointerCancel={onPU} onPointerLeave={onPU}
+              style={{
+                position:"absolute", bottom:0, left:i*kw, width:kw-1, height:kh,
+                background:isP?"linear-gradient(180deg,#b8f5e8,#88e8d0 40%,#70d4bc)":"linear-gradient(180deg,#f5f5f5,#e0e0e0 50%,#ccc)",
+                borderRadius:`0 0 ${4*zoom}px ${4*zoom}px`,
+                borderLeft:"1px solid #bbb",borderRight:"1px solid #bbb",
+                borderBottom:isP?"3px solid #00d4aa":"3px solid #aaa",
+                zIndex:10,cursor:"pointer",touchAction:"none",
+                display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-end",
+                paddingBottom:4*zoom,
+                boxShadow:isP?"0 0 18px rgba(0,213,170,.35),inset 0 -4px 10px rgba(0,213,170,.15)":"inset 0 -4px 8px rgba(0,0,0,.04)",
+                transition:"background .05s",
+              }}>
+              {zoom>=.55&&k.note==="C"&&<span style={{fontSize:Math.max(7,9*zoom),pointerEvents:"none",color:isP?"#00866a":"#999",fontWeight:700}}>C{k.oct}</span>}
+            </div>;
+          })}
+
+          {/* ── 검은 건반 ── */}
+          {blacks.map(k=>{
+            const isP=!!pressed[k.midi];
+            const ni=NN.indexOf(k.note),oo=k.oct-m2n(startMidi).oct;
+            const x=(oo*7+BKO[ni])*kw;
+            return <div key={k.midi} data-midi={k.midi}
+              onPointerDown={e=>{e.stopPropagation();onPD(e)}} onPointerUp={onPU} onPointerCancel={onPU} onPointerLeave={onPU}
+              style={{
+                position:"absolute",bottom:kh-bkh,left:x,width:bkw,height:bkh,
+                background:isP?"linear-gradient(180deg,#5a4f8a,#3a3260 60%,#2a2448)":"linear-gradient(180deg,#2a2a2e,#1a1a1e 50%,#111114)",
+                borderRadius:`0 0 ${3*zoom}px ${3*zoom}px`,
+                border:isP?"1px solid #7b6fbf":"1px solid #000",
+                zIndex:20,cursor:"pointer",touchAction:"none",
+                boxShadow:isP?"0 0 14px rgba(123,111,191,.4)":"0 3px 6px rgba(0,0,0,.6),inset 0 -3px 4px rgba(0,0,0,.4)",
+                transition:"background .05s",
+              }}/>;
+          })}
+
+          {/* ── 옥타브 구분선 (워터폴 배경) ── */}
+          {whites.map((_,i)=>i%7===0&&<div key={`g${i}`} style={{
+            position:"absolute",left:i*kw,top:0,bottom:kh,width:1,
+            background:"rgba(255,255,255,.03)",zIndex:0
+          }}/>)}
+        </div>
+      </div>
+
+      {/* 시작/카운트다운 오버레이 */}
+      {song&&showStart&&!playing&&!cd&&(
+        <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,background:"rgba(6,6,20,.8)",backdropFilter:"blur(4px)"}}>
+          <div style={{textAlign:"center"}}>
+            <div style={{fontSize:17,fontWeight:700,color:"#ddd",marginBottom:6}}>{song.title}</div>
+            <div style={{fontSize:11,color:"#666",marginBottom:16}}>{song.sub}</div>
+            <button onClick={startSong} className="pulse" style={{padding:"14px 44px",borderRadius:50,border:"none",background:"linear-gradient(135deg,#00f5d4,#00c49d)",color:"#060618",fontWeight:800,fontSize:16,cursor:"pointer",boxShadow:"0 0 30px #00f5d422",fontFamily:"inherit"}}>▶ 연주 시작</button>
+            <div style={{fontSize:10,color:"#444",marginTop:12}}>건반을 스크롤/줌 조절 후 시작하세요</div>
+          </div>
+        </div>
+      )}
+      {cd&&(
+        <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,background:"rgba(6,6,20,.6)"}}>
+          <div className="scaleIn" style={{fontSize:80,fontWeight:900,color:"#00f5d4",textShadow:"0 0 60px #00f5d433"}}>{cd}</div>
+        </div>
+      )}
+
+      {/* 하단 */}
+      <div style={{padding:"3px 0",textAlign:"center",background:"rgba(0,0,0,.6)",flexShrink:0,fontSize:9,color:"#333",paddingBottom:"max(3px,env(safe-area-inset-bottom))"}}>
+        🤏 핀치 줌 │ ← → 스크롤 │ +/− 버튼
+      </div>
+    </div>
+  );
+}
+
+const CSS=`
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none;overflow:hidden;background:#08080e}
+.card{width:100%;background:rgba(255,255,255,.03);border-radius:14px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;cursor:pointer;animation:slideUp .4s ease both;color:#fff;outline:none;font-family:inherit;font-size:inherit}
+.card:active{transform:scale(.97)!important;opacity:.8}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes popJ{0%{transform:scale(.4)translateY(6px);opacity:0}40%{transform:scale(1.15)translateY(-2px);opacity:1}100%{transform:scale(1)translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.scaleIn{animation:scaleIn .45s cubic-bezier(.17,.67,.46,1.28)}
+.popJ{animation:popJ .3s ease}
+.pulse{animation:pulse 2s ease infinite}
+::-webkit-scrollbar{height:0;width:0}
+`;
