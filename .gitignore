@@ -1,0 +1,9 @@
+# 사운드폰트 (대용량, GitHub 100MB 한도 초과)
+soundfonts/*.sf2
+soundfonts/*.sf3
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
