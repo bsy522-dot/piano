@@ -1387,22 +1387,22 @@ function openLesson(id) {
   };
   document.getElementById('btn-demo').onclick = () => {
     synthPracticeMode = false; synthWaitMode = false;
-    setSpeed(30);
+    setSpeed(100);  // 정상 속도
     startSynthesia(lesson.notes, baseBPM, true, null);
   };
   document.getElementById('btn-wait').onclick = () => {
     synthPracticeMode = false; synthWaitMode = true;
-    setSpeed(30);
+    setSpeed(100);  // Wait 모드는 시간 흐름 무관, 슬라이더는 정상값
     startSynthesia(lesson.notes, baseBPM, false, null);
   };
   document.getElementById('btn-practice').onclick = () => {
     synthPracticeMode = true; synthWaitMode = false;
-    setSpeed(25);
+    setSpeed(100);  // 정상 속도
     startSynthesia(lesson.notes, baseBPM, false, null);
   };
   document.getElementById('btn-test').onclick = () => {
     synthPracticeMode = false; synthWaitMode = false;
-    setSpeed(50);
+    setSpeed(100);  // 정상 속도
     startSynthesia(lesson.notes, baseBPM, false, id);
   };
 }
@@ -1674,8 +1674,8 @@ function synthLoop() {
 
   let now = (performance.now() - synthStartTime) / 1000;
   const beatToSec = 60 / (synthBPM * synthSpeed);
-  // 노트가 천천히 떨어져 보이도록 (화면 끝에서 hit line까지 약 14초)
-  const pxPerSec = H * 0.07;
+  // 노트 낙하: 화면 끝→hit line 약 7초 (정상적인 시각 속도, 너무 빠르지도 느리지도 않게)
+  const pxPerSec = H * 0.14;
 
   // === Wait Mode 전용 그리기: 시간 흐름 무시. 활성 노트만 위→hit line 애니메이션 후 정지 ===
   if (synthWaitMode && !synthAutoPlay) {
