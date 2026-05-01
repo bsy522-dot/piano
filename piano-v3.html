@@ -1670,17 +1670,18 @@ function synthLoop() {
   // 매우 천천히: 1초당 화면의 10%만 이동
   const pxPerSec = H * (synthWaitMode ? 0.10 : 0.15);
 
-  // === Wait Mode: 노트가 떨어지지 않고 hit line 직전에 항상 고정 ===
+  // === Wait Mode: 위에서 노트가 하나씩 천천히 떨어지다가, hit line 도달 시점에만 정지 ===
   if (synthWaitMode && !synthAutoPlay) {
     const unplayed = synthNotes.filter(n => !n.played);
     if (unplayed.length > 0) {
       const minTime = Math.min(...unplayed.map(n => n.time));
       const nextTimeSec = minTime * beatToSec;
-      // 다음 노트가 hit line 위 5.0초 거리에 항상 떠있음 (충분히 여유롭게 인식)
-      const stopOffset = 5.0;
-      const targetNow = nextTimeSec - stopOffset;
-      synthStartTime = performance.now() - targetNow * 1000;
-      now = targetNow;
+      // 다음 노트가 hit line(=now)에 도달하거나 지났으면 그 순간에 시간 고정
+      // 아직 위에 있으면 정상 흐름 → 자연스럽게 떨어져 내려옴
+      if (now >= nextTimeSec) {
+        synthStartTime = performance.now() - nextTimeSec * 1000;
+        now = nextTimeSec;
+      }
     }
   }
 
