@@ -1674,7 +1674,8 @@ function synthLoop() {
 
   let now = (performance.now() - synthStartTime) / 1000;
   const beatToSec = 60 / (synthBPM * synthSpeed);
-  const pxPerSec = H * 0.15;
+  // 노트가 천천히 떨어져 보이도록 (화면 끝에서 hit line까지 약 14초)
+  const pxPerSec = H * 0.07;
 
   // === Wait Mode 전용 그리기: 시간 흐름 무시. 활성 노트만 위→hit line 애니메이션 후 정지 ===
   if (synthWaitMode && !synthAutoPlay) {
@@ -1802,7 +1803,8 @@ function synthLoop() {
     if (!keyInfo) return;
 
     const noteBottom = H - (noteTimeSec - now) * pxPerSec * dpr;
-    const noteHeight = Math.max(noteDurSec * pxPerSec * dpr, 14*dpr);
+    // 노트는 짧은 펠릿(고정 높이) — duration 무시 (꾹 누르고 있는 게 아니라 한 번 치고 떼는 것)
+    const noteHeight = 22 * dpr;
     const noteTop = noteBottom - noteHeight;
 
     // Off screen below = missed
