@@ -1462,6 +1462,10 @@ let synthScore = {perfect:0, good:0, miss:0, combo:0, maxCombo:0};
 let onNoteCallback = null;
 let particles = []; // visual particles for hit effects
 let judgmentTexts = []; // floating judgment texts
+// Wait Mode 상태
+let waitCurrentMinTime = null;
+let waitGroupStartMs = 0;
+const WAIT_FALL_MS = 1500; // 활성 노트가 위에서 hit line까지 떨어지는 시간(ms)
 
 function resizeSynthCanvas() {
   const canvas = document.getElementById('synth-canvas');
@@ -1528,9 +1532,12 @@ function startSynthesia(notes, bpm, autoPlay, testId) {
     setTimeout(() => { if (firstMidi > 0) scrollToMidi(firstMidi); }, 250);
   }
 
-  synthStartTime = performance.now() + (synthWaitMode ? 2500 : 1500); // lead-in (wait모드는 더 길게)
+  synthStartTime = performance.now() + (synthWaitMode ? 500 : 1500); // lead-in
   synthRunning = true;
   synthPaused = false; synthPauseTime = 0;
+  // Wait Mode 초기화
+  waitCurrentMinTime = null;
+  waitGroupStartMs = performance.now();
 
   if (!autoPlay) {
     onNoteCallback = (midi) => {
@@ -1667,22 +1674,122 @@ function synthLoop() {
 
   let now = (performance.now() - synthStartTime) / 1000;
   const beatToSec = 60 / (synthBPM * synthSpeed);
-  // 매우 천천히: 1초당 화면의 10%만 이동
-  const pxPerSec = H * (synthWaitMode ? 0.10 : 0.15);
+  const pxPerSec = H * 0.15;
 
-  // === Wait Mode: 위에서 노트가 하나씩 천천히 떨어지다가, hit line 도달 시점에만 정지 ===
+  // === Wait Mode 전용 그리기: 시간 흐름 무시. 활성 노트만 위→hit line 애니메이션 후 정지 ===
   if (synthWaitMode && !synthAutoPlay) {
     const unplayed = synthNotes.filter(n => !n.played);
-    if (unplayed.length > 0) {
-      const minTime = Math.min(...unplayed.map(n => n.time));
-      const nextTimeSec = minTime * beatToSec;
-      // 다음 노트가 hit line(=now)에 도달하거나 지났으면 그 순간에 시간 고정
-      // 아직 위에 있으면 정상 흐름 → 자연스럽게 떨어져 내려옴
-      if (now >= nextTimeSec) {
-        synthStartTime = performance.now() - nextTimeSec * 1000;
-        now = nextTimeSec;
-      }
+    if (unplayed.length === 0) {
+      // 모든 노트 완료
+      synthRunning = false;
+      onNoteCallback = null;
+      document.querySelectorAll('.next-up,.next-up-L').forEach(el => el.classList.remove('next-up','next-up-L'));
+      ctx.fillStyle = 'rgba(34,197,94,0.95)';
+      ctx.font = `bold ${28*dpr}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('🎉 완주! 잘했어요!', W/2, H/2);
+      return;
     }
+    const minTime = Math.min(...unplayed.map(n => n.time));
+    const activeNotes = unplayed.filter(n => n.time === minTime);
+
+    // 새 그룹 시작 시 떨어짐 타이머 리셋
+    if (waitCurrentMinTime !== minTime) {
+      waitCurrentMinTime = minTime;
+      waitGroupStartMs = performance.now();
+    }
+
+    // 떨어지는 위치 (위 -30px → hit line, 1.5초)
+    const elapsed = performance.now() - waitGroupStartMs;
+    const t = Math.min(elapsed / WAIT_FALL_MS, 1);
+    const startY = -30 * dpr;
+    const endY = H - 2 * dpr;
+    const noteBottom = startY + (endY - startY) * t;
+    const noteHeight = 28 * dpr;
+    const noteTop = noteBottom - noteHeight;
+
+    // 활성 노트들 그리기
+    activeNotes.forEach(n => {
+      const keyInfo = getKeyX(n.note);
+      if (!keyInfo) return;
+      const keyX = (keyInfo.x - scrollLeft) * canvasToKeyScale;
+      const keyW = keyInfo.width * canvasToKeyScale;
+      const x = keyX + 1*dpr;
+      const w = Math.max(keyW - 2*dpr, 4*dpr);
+      const color = n.hand === 'L' ? '#3b82f6' : '#06b6d4';
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 14 * dpr;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x, noteTop, w, noteHeight, 4*dpr);
+      else ctx.rect(x, noteTop, w, noteHeight);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // 라벨
+      const showKR = document.getElementById('show-korean')?.checked;
+      const label = showKR ? toKoreanNote(n.note) : n.note;
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.font = `bold ${10*dpr}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x + w/2, noteTop + noteHeight/2 + 4*dpr);
+    });
+
+    // hit line (cyan)
+    ctx.strokeStyle = 'rgba(6,182,212,0.6)';
+    ctx.lineWidth = 2*dpr;
+    ctx.setLineDash([8*dpr, 4*dpr]);
+    ctx.beginPath(); ctx.moveTo(0, H-2*dpr); ctx.lineTo(W, H-2*dpr); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 안내 텍스트
+    const showKR = document.getElementById('show-korean')?.checked;
+    const noteList = activeNotes.map(n => showKR ? toKoreanNote(n.note) : n.note).join(' + ');
+    ctx.fillStyle = 'rgba(6,182,212,0.95)';
+    ctx.font = `bold ${14*dpr}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`🐢 ${noteList} 키를 누르세요`, W/2, 22*dpr);
+
+    // 다음 칠 키 강조
+    document.querySelectorAll('.next-up,.next-up-L').forEach(el => el.classList.remove('next-up','next-up-L'));
+    activeNotes.forEach(n => {
+      const el = document.querySelector(`[data-midi="${nameToMidi(n.note)}"]`);
+      if (el && !el.classList.contains('pressed')) {
+        el.classList.add(n.hand === 'L' ? 'next-up-L' : 'next-up');
+      }
+    });
+
+    // 진행률
+    const played = synthNotes.filter(n=>n.played).length;
+    const pct = Math.round(played / synthNotes.length * 100);
+    const pbar = document.getElementById('sc-progress-bar');
+    if (pbar) { pbar.style.width = pct + '%'; document.getElementById('sc-progress-pct').textContent = pct + '%'; }
+
+    // 파티클 + 판정 텍스트
+    particles = particles.filter(p => {
+      p.life -= 0.025;
+      if (p.life <= 0) return false;
+      p.x += p.vx; p.y += p.vy; p.vy += 0.15*dpr;
+      ctx.globalAlpha = p.life;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x-p.size/2, p.y-p.size/2, p.size, p.size);
+      ctx.globalAlpha = 1;
+      return true;
+    });
+    judgmentTexts = judgmentTexts.filter(j => {
+      j.life -= 0.02;
+      if (j.life <= 0) return false;
+      j.y -= 1.5*dpr;
+      ctx.globalAlpha = j.life;
+      ctx.fillStyle = j.color;
+      ctx.font = `bold ${14*dpr}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(j.text, j.x, j.y);
+      ctx.globalAlpha = 1;
+      return true;
+    });
+
+    synthAnimId = requestAnimationFrame(synthLoop);
+    return;
   }
 
   let allDone = true;
