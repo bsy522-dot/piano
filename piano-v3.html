@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>피아노 마스터 v4</title>
+<title>피아노 마스터 v5</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -172,6 +172,70 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
   .modal h3 { font-size:15px; }
   .modal .stars-big { font-size:22px; }
 }
+
+/* Light mode */
+[data-theme="light"] {
+  --bg: #f0f2f7; --surface: #ffffff; --surface2: #f5f6f8; --border: #dde1e8;
+  --text: #1a1a2e; --text2: #5a6478; --accent: #3b6ce7;
+}
+[data-theme="light"] .key-white { background:linear-gradient(180deg,#fff 0%,#f7f7f7 70%,#efefef 100%); border-color:#aaa; }
+[data-theme="light"] .key-black { background:linear-gradient(180deg,#333 0%,#111 100%); }
+[data-theme="light"] #piano-wrap { background:#e0e2e7; }
+[data-theme="light"] #audio-start-overlay { background:rgba(240,242,247,.97) !important; }
+
+/* Theme toggle */
+.theme-toggle { background:none; border:1px solid var(--border); border-radius:6px; padding:2px 8px; cursor:pointer; font-size:14px; color:var(--text); transition:all .2s; line-height:1; }
+.theme-toggle:hover { background:var(--surface2); }
+
+/* Search bar */
+.search-wrap { padding:6px 10px 2px; }
+.search-wrap input { width:100%; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:7px 10px 7px 30px; font-size:12px; outline:none; }
+.search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 2px rgba(74,125,255,.15); }
+.search-wrap input::placeholder { color:var(--text2); }
+.search-wrap { position:relative; }
+.search-wrap::before { content:'🔍'; position:absolute; left:18px; top:50%; transform:translateY(-50%); font-size:12px; pointer-events:none; }
+
+/* Difficulty badges */
+.diff-badge { font-size:9px; padding:1px 6px; border-radius:8px; font-weight:600; margin-left:4px; }
+.diff-easy { background:rgba(34,197,94,.15); color:#22c55e; }
+.diff-mid { background:rgba(234,179,8,.15); color:#eab308; }
+.diff-hard { background:rgba(239,68,68,.15); color:#ef4444; }
+.diff-expert { background:rgba(168,85,247,.15); color:#a855f7; }
+
+/* Stats panel */
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:10px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; }
+.stat-value { font-size:22px; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.stat-label { font-size:11px; color:var(--text2); margin-top:4px; }
+.stats-section-title { font-size:13px; font-weight:700; color:var(--accent); padding:12px 10px 4px; }
+
+/* Achievements */
+.ach-item { display:flex; align-items:center; gap:8px; padding:8px 10px; margin:0 10px 4px; background:var(--surface); border-radius:6px; font-size:12px; border:1px solid var(--border); }
+.ach-item.locked { opacity:.45; }
+.ach-item.unlocked { border-color:rgba(234,179,8,.3); }
+.ach-icon { font-size:20px; width:28px; text-align:center; flex-shrink:0; }
+.ach-info { flex:1; }
+.ach-name { font-weight:600; font-size:12px; }
+.ach-desc { font-size:10px; color:var(--text2); }
+.ach-check { color:var(--green); font-size:14px; flex-shrink:0; }
+
+/* Toast notification */
+.toast-container { position:fixed; top:50px; left:50%; transform:translateX(-50%); z-index:200; pointer-events:none; }
+.toast { background:var(--surface); border:1px solid var(--accent); border-radius:8px; padding:8px 16px; font-size:12px; color:var(--text); opacity:0; transform:translateY(-16px); transition:all .3s; pointer-events:none; box-shadow:0 4px 16px rgba(0,0,0,.3); margin-bottom:4px; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateY(0); }
+
+/* Metronome */
+.metro-wrap { display:flex; align-items:center; gap:4px; }
+.metro-btn { background:none; border:1px solid var(--border); border-radius:4px; padding:2px 8px; font-size:11px; cursor:pointer; color:var(--text2); transition:all .15s; }
+.metro-btn.active { color:var(--accent); border-color:var(--accent); background:rgba(74,125,255,.1); }
+.metro-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--text2); transition:all .08s; }
+.metro-dot.beat { background:var(--accent); transform:scale(1.8); box-shadow:0 0 6px var(--accent); }
+
+/* Streak badge */
+.streak-badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 7px; border-radius:10px; background:rgba(234,179,8,.15); color:#eab308; font-weight:600; }
+
+/* Confetti */
+@keyframes confetti-fall { 0%{opacity:1;transform:translateY(0) rotate(0deg)} 100%{opacity:0;transform:translateY(100vh) rotate(720deg)} }
 </style>
 </head>
 <body>
@@ -182,10 +246,12 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
 </div>
 <div id="app">
   <div class="header">
-    <span class="header-title">Piano Master v4</span>
+    <span class="header-title">Piano Master v5</span>
     <div class="header-info">
+      <span id="streak-badge" class="streak-badge" style="display:none">🔥 <span id="streak-count">0</span>일</span>
       <span id="midi-status">MIDI: 대기</span>
       <span id="octave-display">C4</span>
+      <button class="theme-toggle" id="theme-toggle" title="테마 전환">🌙</button>
     </div>
   </div>
   <div class="tabs">
@@ -193,6 +259,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
     <div class="tab" data-tab="learn"><span class="tab-icon">📖</span>학습</div>
     <div class="tab" data-tab="synth"><span class="tab-icon">🎮</span>Synthesia</div>
     <div class="tab" data-tab="record"><span class="tab-icon">⏺</span>녹음</div>
+    <div class="tab" data-tab="stats"><span class="tab-icon">📊</span>통계</div>
   </div>
 
   <!-- Free Play -->
@@ -215,6 +282,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
 
   <!-- Learn -->
   <div class="panel" id="panel-learn">
+    <div class="search-wrap"><input type="text" id="song-search" placeholder="곡 이름으로 검색..." autocomplete="off"></div>
     <div class="learn-list" id="learn-list"></div>
     <div class="lesson-view" id="lesson-view">
       <div class="lesson-header">
@@ -238,6 +306,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
     <div class="ctrl-bar">
       <label>곡 <select id="song-select"></select></label>
       <label title="10% 매우 느림 ~ 200% 빠름">속도 <input type="range" id="speed" min="10" max="200" value="100"><span id="speed-val">1.0x</span></label>
+      <div class="metro-wrap"><button class="metro-btn" id="metro-toggle" title="메트로놈">🥁 메트로놈</button><span class="metro-dot" id="metro-dot"></span></div>
       <button class="btn btn-primary" id="btn-play-synth">▶ 재생</button>
       <button class="btn btn-secondary" id="btn-stop-synth">■ 정지</button>
       <label><input type="checkbox" id="auto-play"> 자동</label>
@@ -271,6 +340,13 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
     <div class="rec-list" id="rec-list"></div>
   </div>
 
+  <!-- Stats -->
+  <div class="panel" id="panel-stats">
+    <div class="stats-grid" id="stats-grid"></div>
+    <div class="stats-section-title">🏆 업적</div>
+    <div id="achievement-list" style="overflow-y:auto;flex:1;padding-bottom:10px"></div>
+  </div>
+
   <!-- Piano keyboard -->
   <div id="piano-wrap"><div id="piano"></div></div>
 </div>
@@ -286,6 +362,8 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
     </div>
   </div>
 </div>
+
+<div class="toast-container" id="toast-container"></div>
 
 <script>
 // ================ CONSTANTS ================
@@ -636,6 +714,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     tab.classList.add('active');
     document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
     if (tab.dataset.tab === 'synth') resizeSynthCanvas();
+    if (tab.dataset.tab === 'stats') { renderStats(); renderAchievements(); }
   });
 });
 
@@ -1219,6 +1298,68 @@ addSong('humoresque','유머레스크 (Humoresque)',76,()=>{
   ];
 });
 
+// ================ NEW SONGS v5 (신규 5곡) ================
+
+addSong('나비야','나비야 나비야',100,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('G4',0),n('E4',1),n('E4',2,2),n('F4',4),n('D4',5),n('D4',6,2),
+    n('C4',8),n('D4',9),n('E4',10),n('F4',11),n('G4',12),n('G4',13),n('G4',14,2),
+    n('G4',16),n('E4',17),n('E4',18),n('E4',19),n('F4',20),n('D4',21),n('D4',22,2),
+    n('C4',24),n('E4',25),n('G4',26),n('G4',27),n('C4',28,4)];
+});
+
+addSong('고향의봄','고향의 봄',100,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('G4',0),n('G4',1),n('A4',2),n('G4',3),n('E4',4,2),
+    n('D4',6),n('E4',7),n('G4',8),n('A4',9),n('G4',10,2),
+    n('E5',12),n('E5',13),n('D5',14),n('B4',15),n('D5',16,2),
+    n('G4',18),n('A4',19),n('B4',20),n('A4',21),n('G4',22,2),
+    n('G4',24),n('G4',25),n('A4',26),n('G4',27),n('E4',28,2),
+    n('D4',30),n('E4',31),n('G4',32),n('A4',33),n('G4',34,2),
+    n('E5',36),n('D5',37),n('B4',38),n('D5',39),n('G4',40,2),
+    n('A4',42),n('B4',43),n('A4',44),n('G4',45),n('G4',46,2)];
+});
+
+addSong('doremi','도레미 송 (Do Re Mi)',120,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('C4',0,1.5),n('D4',1.5,.5),n('E4',2,1.5),n('C4',3.5,.5),n('E4',4),n('C4',5),n('E4',6,2),
+    n('D4',8,1.5),n('E4',9.5,.5),n('F4',10,.5),n('F4',10.5,.5),n('E4',11,.5),n('D4',11.5,.5),n('F4',12,4),
+    n('E4',16,1.5),n('F4',17.5,.5),n('G4',18,1.5),n('E4',19.5,.5),n('G4',20),n('E4',21),n('G4',22,2),
+    n('F4',24,1.5),n('G4',25.5,.5),n('A4',26,.5),n('A4',26.5,.5),n('G4',27,.5),n('F4',27.5,.5),n('A4',28,4),
+    n('G4',32,1.5),n('C4',33.5,.5),n('D4',34,.5),n('E4',34.5,.5),n('F4',35,.5),n('G4',35.5,.5),n('A4',36,4),
+    n('A4',40,1.5),n('D4',41.5,.5),n('E4',42,.5),n('F#4',42.5,.5),n('G4',43,.5),n('A4',43.5,.5),n('B4',44,4),
+    n('B4',48,1.5),n('E4',49.5,.5),n('F#4',50,.5),n('G#4',50.5,.5),n('A4',51,.5),n('B4',51.5,.5),n('C5',52,4)];
+});
+
+addSong('산토끼','산토끼',110,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('E4',0),n('E4',1),n('E4',2),n('E4',3),n('G4',4),n('G4',5),n('E4',6,2),
+    n('D4',8),n('D4',9),n('E4',10),n('D4',11),n('C4',12,4),
+    n('E4',16),n('E4',17),n('E4',18),n('E4',19),n('G4',20),n('G4',21),n('E4',22,2),
+    n('G4',24),n('A4',25),n('G4',26),n('E4',27),n('C4',28,4)];
+});
+
+addSong('edelweiss','에델바이스 (Edelweiss)',100,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [n('E4',0,2),n('G4',2),n('D5',3,3),
+    l('C3',0,3),l('G3',0,3),l('G2',3,3),l('D3',3,3),
+    n('C5',6,2),n('G4',8),n('F4',9,3),
+    l('F2',6,3),l('C3',6,3),l('G2',9,3),l('D3',9,3),
+    n('E4',12,2),n('E4',14),n('F4',15),n('G4',16,2),n('A4',18),
+    l('C3',12,3),l('G3',12,3),l('F2',15,3),l('C3',15,3),
+    n('G4',19,3),
+    l('G2',18,3),l('D3',18,3),l('G2',21,3),l('D3',21,3),
+    n('E4',24,2),n('G4',26),n('D5',27,3),
+    l('C3',24,3),l('G3',24,3),l('G2',27,3),l('D3',27,3),
+    n('C5',30,2),n('G4',32),n('F4',33,3),
+    l('F2',30,3),l('C3',30,3),l('G2',33,3),l('D3',33,3),
+    n('E4',36,2),n('E4',38),n('F4',39),n('G4',40,2),n('A4',42),
+    l('C3',36,3),l('G3',36,3),l('F2',39,3),l('C3',39,3),
+    n('C5',43,3),
+    l('C3',42,3),l('G3',42,3),l('C3',45,3),l('E3',45,3)];
+});
+
 // ================ BEYER LESSONS (No.1~10 기반) ================
 const LESSONS = { beyer: [], songs: [] };
 
@@ -1315,6 +1456,12 @@ LESSONS.songs.push(
   // 연주곡
   {id:'s21',name:'River Flows in You',desc:'유루마 - River Flows in You. A장조.',notes:SONGS['river_flows'].notes,bpm:SONGS['river_flows'].bpm},
   {id:'s22',name:'라 캄파넬라',desc:'리스트 - La Campanella. G#단조 상급.',notes:SONGS['la_campanella'].notes,bpm:SONGS['la_campanella'].bpm},
+  // v5 신규
+  {id:'s23',name:'나비야 나비야',desc:'동요 &quot;나비야 나비야&quot;. 초급 오른손.',notes:SONGS['나비야'].notes,bpm:SONGS['나비야'].bpm},
+  {id:'s24',name:'고향의 봄',desc:'동요 &quot;나의 살던 고향은&quot;. 초급.',notes:SONGS['고향의봄'].notes,bpm:SONGS['고향의봄'].bpm},
+  {id:'s25',name:'도레미 송',desc:'Sound of Music - Do Re Mi. 초급.',notes:SONGS['doremi'].notes,bpm:SONGS['doremi'].bpm},
+  {id:'s26',name:'산토끼',desc:'동요 &quot;산토끼 토끼야&quot;. 초급 오른손.',notes:SONGS['산토끼'].notes,bpm:SONGS['산토끼'].bpm},
+  {id:'s27',name:'에델바이스',desc:'Sound of Music - Edelweiss. 양손 초급.',notes:SONGS['edelweiss'].notes,bpm:SONGS['edelweiss'].bpm},
 );
 
 // 바이엘에도 기본 BPM 부여
@@ -1338,13 +1485,13 @@ function renderLearnList() {
   LESSONS.beyer.forEach(l => {
     const stars = getLessonStars(l.id);
     const starStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3-stars) : '';
-    html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
+    html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}${diffBadge(l.id)}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
   });
   html += '</div>';
 
   // Songs by category
   const categories = [
-    {title:'🎵 동요/찬송가 (초급)', ids:['s1','s2','s3','s4','s5','s20']},
+    {title:'🎵 동요/찬송가 (초급)', ids:['s1','s2','s3','s4','s5','s20','s23','s24','s25','s26','s27']},
     {title:'🎹 클래식 초급~중급', ids:['s6','s7','s8']},
     {title:'🎼 클래식 중급', ids:['s9','s10','s11','s12','s13']},
     {title:'🔥 클래식 상급', ids:['s14','s15','s16','s17','s18','s19']},
@@ -1357,7 +1504,7 @@ function renderLearnList() {
     items.forEach(l => {
       const stars = getLessonStars(l.id);
       const starStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3-stars) : '';
-      html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
+      html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}${diffBadge(l.id)}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
     });
     html += '</div>';
   });
@@ -1558,6 +1705,7 @@ function startSynthesia(notes, bpm, autoPlay, testId) {
         synthScore.maxCombo = Math.max(synthScore.maxCombo, synthScore.combo);
         flashHit(target, midi, 'perfect');
         updateScoreUI();
+        recordNoteHit('perfect');
         // 시간 워프는 synthLoop가 매 프레임 처리 (다음 노트가 자동으로 hit line 직전 고정)
         return;
       }
@@ -1576,6 +1724,7 @@ function startSynthesia(notes, bpm, autoPlay, testId) {
         else if (bestDiff < 0.20) { best.result='good'; synthScore.good++; synthScore.combo++; }
         else { best.result='miss'; synthScore.miss++; synthScore.combo=0; }
         synthScore.maxCombo = Math.max(synthScore.maxCombo, synthScore.combo);
+        recordNoteHit(best.result);
 
         // Particles
         const keyInfo = getKeyX(best.note);
@@ -1684,11 +1833,14 @@ function synthLoop() {
       // 모든 노트 완료
       synthRunning = false;
       onNoteCallback = null;
+      stopMetronome();
+      recordSongComplete(synthScore.maxCombo);
       document.querySelectorAll('.next-up,.next-up-L').forEach(el => el.classList.remove('next-up','next-up-L'));
       ctx.fillStyle = 'rgba(34,197,94,0.95)';
       ctx.font = `bold ${28*dpr}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText('🎉 완주! 잘했어요!', W/2, H/2);
+      launchConfetti();
       return;
     }
     const minTime = Math.min(...unplayed.map(n => n.time));
@@ -1969,6 +2121,8 @@ function synthLoop() {
   if ((allDone && now > 2) || (!hasUnplayed && synthNotes.every(n=>n.played))) {
     synthRunning = false;
     onNoteCallback = null;
+    stopMetronome();
+    recordSongComplete(synthScore.maxCombo);
     if (synthTestId) {
       const total = synthNotes.length;
       const pct = (synthScore.perfect + synthScore.good * 0.5) / total;
@@ -1976,6 +2130,7 @@ function synthLoop() {
       if (pct >= 0.9) stars = 3;
       else if (pct >= 0.7) stars = 2;
       else if (pct >= 0.4) stars = 1;
+      if (stars >= 3) launchConfetti();
       setLessonStars(synthTestId, stars);
       document.getElementById('result-title').textContent = '테스트 결과';
       document.getElementById('result-stars').textContent = '★'.repeat(stars) + '☆'.repeat(3-stars);
@@ -2048,7 +2203,7 @@ document.getElementById('auto-play').addEventListener('change', e => {
 (function(){
   const sel = document.getElementById('song-select');
   const groups = [
-    {label:'동요/찬송가', keys:['비행기','학교종','작은별','곰세마리','AmazingGrace','clementine']},
+    {label:'동요/찬송가', keys:['비행기','학교종','작은별','곰세마리','나비야','고향의봄','doremi','산토끼','edelweiss','AmazingGrace','clementine']},
     {label:'클래식 초중급', keys:['ode_to_joy','minuet_g','humoresque']},
     {label:'클래식 중급', keys:['엘리제','캐논','air_on_g','traumerei','swan_lake']},
     {label:'클래식 상급', keys:['turkish_march','moonlight','nocturne','spring','liebestraum','hungarian5']},
@@ -2167,13 +2322,228 @@ window.deleteRecording = function(idx) {
   renderRecordings();
 };
 
+// ================ DIFFICULTY MAP ================
+const LESSON_DIFF = {
+  by1:'easy',by2:'easy',by3:'easy',by4:'easy',by5:'easy',by6:'easy',by7:'easy',by8:'easy',by9:'easy',by10:'easy',
+  s1:'easy',s2:'easy',s3:'easy',s4:'easy',s5:'easy',s20:'easy',s23:'easy',s24:'easy',s25:'easy',s26:'easy',s27:'easy',
+  s6:'easy',s7:'mid',s8:'mid',
+  s9:'mid',s10:'mid',s11:'mid',s12:'mid',s13:'mid',
+  s14:'hard',s15:'hard',s16:'hard',s17:'hard',s18:'expert',s19:'hard',
+  s21:'mid',s22:'expert',
+};
+const DIFF_LABELS = {easy:'초급',mid:'중급',hard:'상급',expert:'최상급'};
+function diffBadge(id) {
+  const d = LESSON_DIFF[id];
+  if (!d) return '';
+  return ` <span class="diff-badge diff-${d}">${DIFF_LABELS[d]}</span>`;
+}
+
+// ================ THEME TOGGLE ================
+function initTheme() {
+  const saved = localStorage.getItem('piano-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeBtn(saved);
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('piano-theme', next);
+  updateThemeBtn(next);
+}
+function updateThemeBtn(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+// ================ SONG SEARCH ================
+document.getElementById('song-search').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#learn-list .lesson-item').forEach(item => {
+    const name = item.querySelector('.l-name')?.textContent?.toLowerCase() || '';
+    item.style.display = name.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('#learn-list .learn-section').forEach(sec => {
+    const items = sec.querySelectorAll('.lesson-item');
+    const visible = Array.from(items).some(i => i.style.display !== 'none');
+    sec.style.display = visible ? '' : 'none';
+  });
+});
+
+// ================ STATISTICS ================
+let stats = JSON.parse(localStorage.getItem('piano-v5-stats') || 'null') || {
+  totalNotes:0, totalPerfect:0, totalTime:0, songsCompleted:0,
+  maxCombo:0, lastPlayDate:null, streak:0, sessionsToday:0
+};
+function saveStats() { localStorage.setItem('piano-v5-stats', JSON.stringify(stats)); }
+function recordNoteHit(result) {
+  stats.totalNotes++;
+  if (result === 'perfect') stats.totalPerfect++;
+  saveStats();
+  checkAchievements();
+}
+function recordSongComplete(combo) {
+  stats.songsCompleted++;
+  if (combo > stats.maxCombo) stats.maxCombo = combo;
+  saveStats();
+  checkAchievements();
+}
+function updateStreak() {
+  const today = new Date().toISOString().slice(0,10);
+  if (stats.lastPlayDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
+  if (stats.lastPlayDate === yesterday) stats.streak++;
+  else if (stats.lastPlayDate !== today) stats.streak = 1;
+  stats.lastPlayDate = today;
+  saveStats();
+  renderStreak();
+  checkAchievements();
+}
+function renderStreak() {
+  const badge = document.getElementById('streak-badge');
+  if (stats.streak > 0) {
+    badge.style.display = '';
+    document.getElementById('streak-count').textContent = stats.streak;
+  } else badge.style.display = 'none';
+}
+function renderStats() {
+  const accuracy = stats.totalNotes > 0 ? Math.round(stats.totalPerfect / stats.totalNotes * 100) : 0;
+  const el = document.getElementById('stats-grid');
+  el.innerHTML = `
+    <div class="stat-card"><div class="stat-value">${stats.totalNotes.toLocaleString()}</div><div class="stat-label">총 노트 수</div></div>
+    <div class="stat-card"><div class="stat-value">${accuracy}%</div><div class="stat-label">Perfect 비율</div></div>
+    <div class="stat-card"><div class="stat-value">${stats.songsCompleted}</div><div class="stat-label">곡 완주</div></div>
+    <div class="stat-card"><div class="stat-value">${stats.maxCombo}</div><div class="stat-label">최대 콤보</div></div>
+    <div class="stat-card"><div class="stat-value">${stats.streak}</div><div class="stat-label">연속 연습일</div></div>
+    <div class="stat-card"><div class="stat-value">${Object.keys(progress).filter(k=>progress[k]>=3).length}</div><div class="stat-label">별 3개 곡</div></div>
+  `;
+}
+
+// ================ ACHIEVEMENTS ================
+const ACHIEVEMENTS = [
+  {id:'ach_first',icon:'🎵',name:'첫 음표',desc:'첫 번째 노트를 연주하세요',check:()=>stats.totalNotes>=1},
+  {id:'ach_100',icon:'🎹',name:'100음표',desc:'100개의 노트를 연주하세요',check:()=>stats.totalNotes>=100},
+  {id:'ach_1000',icon:'🎯',name:'1000음표',desc:'1000개의 노트를 연주하세요',check:()=>stats.totalNotes>=1000},
+  {id:'ach_first_star',icon:'⭐',name:'첫 번째 별',desc:'학습에서 첫 별을 획득하세요',check:()=>Object.values(progress).some(v=>v>0)},
+  {id:'ach_perfect',icon:'🏆',name:'만점왕',desc:'테스트에서 별 3개를 받으세요',check:()=>Object.values(progress).some(v=>v>=3)},
+  {id:'ach_streak3',icon:'🔥',name:'3일 연속',desc:'3일 연속 연습하세요',check:()=>stats.streak>=3},
+  {id:'ach_streak7',icon:'💪',name:'7일 연속',desc:'7일 연속 연습하세요',check:()=>stats.streak>=7},
+  {id:'ach_5songs',icon:'🎼',name:'5곡 클리어',desc:'5곡을 완주하세요',check:()=>stats.songsCompleted>=5},
+  {id:'ach_combo10',icon:'💎',name:'10 콤보',desc:'10 콤보를 달성하세요',check:()=>stats.maxCombo>=10},
+  {id:'ach_combo50',icon:'🌟',name:'50 콤보',desc:'50 콤보를 달성하세요',check:()=>stats.maxCombo>=50},
+  {id:'ach_beyer',icon:'🎓',name:'바이엘 마스터',desc:'바이엘 10개를 모두 완료하세요',check:()=>{
+    for(let i=1;i<=10;i++) if(!progress['by'+i] || progress['by'+i]<1) return false; return true;
+  }},
+  {id:'ach_allsongs',icon:'👑',name:'전곡 마스터',desc:'모든 곡에서 별 1개 이상',check:()=>{
+    const all=[...LESSONS.beyer,...LESSONS.songs];
+    return all.every(l=>progress[l.id]&&progress[l.id]>=1);
+  }},
+];
+let unlockedAch = JSON.parse(localStorage.getItem('piano-v5-ach') || '[]');
+function saveAch() { localStorage.setItem('piano-v5-ach', JSON.stringify(unlockedAch)); }
+
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(a => {
+    if (unlockedAch.includes(a.id)) return;
+    if (a.check()) {
+      unlockedAch.push(a.id);
+      saveAch();
+      showToast(`🏆 업적 달성: ${a.name}`);
+    }
+  });
+}
+
+function renderAchievements() {
+  const el = document.getElementById('achievement-list');
+  el.innerHTML = ACHIEVEMENTS.map(a => {
+    const unlocked = unlockedAch.includes(a.id);
+    return `<div class="ach-item ${unlocked?'unlocked':'locked'}">
+      <span class="ach-icon">${a.icon}</span>
+      <div class="ach-info"><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div>
+      ${unlocked ? '<span class="ach-check">✓</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+// ================ TOAST NOTIFICATION ================
+function showToast(msg) {
+  const container = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  container.appendChild(t);
+  requestAnimationFrame(() => { t.classList.add('show'); });
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+// ================ METRONOME ================
+let metroActive = false, metroInterval = null, metroBeat = 0;
+function startMetronome(bpm) {
+  stopMetronome();
+  metroActive = true;
+  document.getElementById('metro-toggle').classList.add('active');
+  const intervalMs = 60000 / bpm;
+  metroBeat = 0;
+  metroTick();
+  metroInterval = setInterval(metroTick, intervalMs);
+}
+function metroTick() {
+  const ctx = ensureAudio();
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = metroBeat % 4 === 0 ? 1000 : 800;
+  g.gain.setValueAtTime(0.15, now);
+  g.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+  osc.connect(g); g.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.05);
+  metroBeat++;
+  const dot = document.getElementById('metro-dot');
+  dot.classList.add('beat');
+  setTimeout(() => dot.classList.remove('beat'), 100);
+}
+function stopMetronome() {
+  metroActive = false;
+  if (metroInterval) { clearInterval(metroInterval); metroInterval = null; }
+  document.getElementById('metro-toggle').classList.remove('active');
+}
+document.getElementById('metro-toggle').addEventListener('click', () => {
+  if (metroActive) { stopMetronome(); return; }
+  const bpmVal = synthBPM * (parseInt(document.getElementById('speed').value) / 100);
+  startMetronome(bpmVal || 120);
+});
+
+// ================ CONFETTI ================
+function launchConfetti() {
+  const colors = ['#22c55e','#eab308','#3b82f6','#ef4444','#a855f7','#06b6d4','#f97316'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[i%colors.length]};z-index:150;pointer-events:none;border-radius:${Math.random()>.5?'50%':'2px'};left:${Math.random()*100}vw;top:-10px;animation:confetti-fall ${2+Math.random()*2}s ease-out forwards;animation-delay:${Math.random()*0.5}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
 // ================ INIT ================
 function init() {
+  initTheme();
   buildPiano();
   buildKeyMap();
   initMIDI();
   renderLearnList();
   renderRecordings();
+  renderStreak();
+  updateStreak();
+  renderStats();
+  renderAchievements();
+  checkAchievements();
+
+  // Register SW
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
 
   // Scroll to middle C
   setTimeout(() => {
