@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>피아노 마스터 v5</title>
+<title>피아노 마스터 v6</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -236,6 +236,42 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
 
 /* Confetti */
 @keyframes confetti-fall { 0%{opacity:1;transform:translateY(0) rotate(0deg)} 100%{opacity:0;transform:translateY(100vh) rotate(720deg)} }
+
+/* Favorites */
+.fav-btn { background:none; border:none; cursor:pointer; font-size:16px; padding:2px; transition:transform .15s; flex-shrink:0; }
+.fav-btn:hover { transform:scale(1.3); }
+.fav-btn.active { animation:fav-pop .3s ease; }
+@keyframes fav-pop { 0%{transform:scale(1)} 50%{transform:scale(1.4)} 100%{transform:scale(1)} }
+
+/* Sort & Filter bar */
+.sort-bar { display:flex; gap:6px; padding:4px 10px; align-items:center; font-size:11px; color:var(--text2); border-bottom:1px solid var(--border); background:var(--surface); flex-wrap:wrap; }
+.sort-btn { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:2px 10px; font-size:10px; cursor:pointer; color:var(--text2); transition:all .15s; }
+.sort-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.sort-btn:hover:not(.active) { background:var(--surface2); }
+
+/* Best score badge */
+.best-score { font-size:9px; padding:1px 6px; border-radius:8px; background:rgba(6,182,212,.12); color:var(--cyan); font-weight:600; margin-left:4px; }
+
+/* Recently played section */
+.recent-section { padding:6px 10px; border-bottom:1px solid var(--border); }
+.recent-section h4 { font-size:11px; color:var(--text2); margin-bottom:4px; display:flex; align-items:center; gap:4px; }
+.recent-chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; }
+.recent-chip { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 10px; font-size:11px; cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
+.recent-chip:hover { border-color:var(--accent); background:rgba(74,125,255,.08); }
+
+/* Hand toggle */
+.hand-toggle { display:inline-flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.hand-btn { padding:2px 8px; font-size:10px; cursor:pointer; background:var(--bg); color:var(--text2); border:none; transition:all .15s; }
+.hand-btn.active { background:var(--accent); color:#fff; }
+
+/* Ripple on keys */
+@keyframes key-ripple { 0%{transform:scale(0);opacity:.6} 100%{transform:scale(2.5);opacity:0} }
+.key-ripple { position:absolute; border-radius:50%; background:var(--accent); pointer-events:none; animation:key-ripple .4s ease-out forwards; z-index:3; }
+
+/* Song card enhancements */
+.lesson-item { position:relative; }
+.lesson-item .l-meta { display:flex; align-items:center; gap:4px; }
+.lesson-item .note-count { font-size:9px; color:var(--text2); }
 </style>
 </head>
 <body>
@@ -246,7 +282,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
 </div>
 <div id="app">
   <div class="header">
-    <span class="header-title">Piano Master v5</span>
+    <span class="header-title">Piano Master v6</span>
     <div class="header-info">
       <span id="streak-badge" class="streak-badge" style="display:none">🔥 <span id="streak-count">0</span>일</span>
       <span id="midi-status">MIDI: 대기</span>
@@ -283,6 +319,19 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
   <!-- Learn -->
   <div class="panel" id="panel-learn">
     <div class="search-wrap"><input type="text" id="song-search" placeholder="곡 이름으로 검색..." autocomplete="off"></div>
+    <div class="sort-bar">
+      <span>정렬:</span>
+      <button class="sort-btn active" data-sort="default">기본</button>
+      <button class="sort-btn" data-sort="name">이름순</button>
+      <button class="sort-btn" data-sort="diff">난이도순</button>
+      <button class="sort-btn" data-sort="recent">최근연주</button>
+      <span style="flex:1"></span>
+      <button class="sort-btn" data-sort="fav" title="즐겨찾기만 보기">&#9829; 즐겨찾기</button>
+    </div>
+    <div class="recent-section" id="recent-section" style="display:none">
+      <h4>&#128338; 최근 연주한 곡</h4>
+      <div class="recent-chips" id="recent-chips"></div>
+    </div>
     <div class="learn-list" id="learn-list"></div>
     <div class="lesson-view" id="lesson-view">
       <div class="lesson-header">
@@ -312,6 +361,7 @@ html, body { height:100%; background:var(--bg); color:var(--text); font-family:'
       <label><input type="checkbox" id="auto-play"> 자동</label>
       <label title="건반을 눌러야 다음 노트 진행"><input type="checkbox" id="wait-mode"> 🐢초보자</label>
       <label title="도/레/미 한글 표시"><input type="checkbox" id="show-korean"> 한글</label>
+      <div class="hand-toggle"><button class="hand-btn active" data-hand="both">양손</button><button class="hand-btn" data-hand="R">오른손</button><button class="hand-btn" data-hand="L">왼손</button></div>
     </div>
     <div class="score-bar" id="synth-score" style="display:none">
       <span class="s-perfect">P:<b id="sc-perfect">0</b></span>
@@ -1360,6 +1410,133 @@ addSong('edelweiss','에델바이스 (Edelweiss)',100,()=>{
     l('C3',42,3),l('G3',42,3),l('C3',45,3),l('E3',45,3)];
 });
 
+// ================ NEW SONGS v6 (신규 8곡) ================
+
+addSong('징글벨','징글벨 (Jingle Bells)',140,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [
+    n('E4',0),n('E4',1),n('E4',2,2),n('E4',4),n('E4',5),n('E4',6,2),
+    n('E4',8),n('G4',9),n('C4',10),n('D4',11),n('E4',12,4),
+    n('F4',16),n('F4',17),n('F4',18),n('F4',19),n('F4',20),n('E4',21),n('E4',22),n('E4',23,.5),n('E4',23.5,.5),
+    n('E4',24),n('D4',25),n('D4',26),n('E4',27),n('D4',28,2),n('G4',30,2),
+    n('E4',32),n('E4',33),n('E4',34,2),n('E4',36),n('E4',37),n('E4',38,2),
+    n('E4',40),n('G4',41),n('C4',42),n('D4',43),n('E4',44,4),
+    n('F4',48),n('F4',49),n('F4',50),n('F4',51),n('F4',52),n('E4',53),n('E4',54),n('E4',55,.5),n('E4',55.5,.5),
+    n('G4',56),n('G4',57),n('F4',58),n('D4',59),n('C4',60,4),
+    l('C3',0,4),l('C3',4,4),l('C3',8,2),l('G2',10,2),l('C3',12,4),
+    l('F2',16,4),l('C3',20,2),l('G2',22,2),l('G2',24,2),l('C3',26,2),l('G2',28,2),l('G2',30,2),
+    l('C3',32,4),l('C3',36,4),l('C3',40,2),l('G2',42,2),l('C3',44,4),
+    l('F2',48,4),l('C3',52,2),l('G2',54,2),l('G2',56,2),l('F2',58,2),l('C3',60,4)
+  ];
+});
+
+addSong('무궁화','무궁화 꽃이 피었습니다',100,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('G4',0),n('G4',1),n('E4',2),n('G4',3),n('A4',4,2),n('G4',6,2),
+    n('E4',8),n('G4',9),n('G4',10),n('E4',11),n('D4',12,4),
+    n('D4',16),n('E4',17),n('G4',18),n('A4',19),n('G4',20),n('E4',21),n('G4',22,2),
+    n('A4',24),n('G4',25),n('E4',26),n('D4',27),n('C4',28,4)];
+});
+
+addSong('섬집아기','섬집 아기',88,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('G4',0,2),n('E4',2),n('D4',3),n('C4',4,2),n('D4',6,2),
+    n('E4',8,2),n('G4',10),n('A4',11),n('G4',12,4),
+    n('A4',16,2),n('G4',18),n('E4',19),n('G4',20,2),n('D4',22,2),
+    n('E4',24),n('G4',25),n('E4',26),n('D4',27),n('C4',28,4),
+    n('G4',32,2),n('E4',34),n('D4',35),n('C4',36,2),n('D4',38,2),
+    n('E4',40,2),n('G4',42),n('A4',43),n('G4',44,4),
+    n('A4',48,2),n('C5',50),n('A4',51),n('G4',52,2),n('E4',54,2),
+    n('D4',56),n('E4',57),n('D4',58),n('C4',59),n('C4',60,4)];
+});
+
+addSong('런던다리','런던다리 (London Bridge)',120,()=>{
+  const n=(note,t,d=1)=>({note,time:t,duration:d,hand:'R'});
+  return [n('G4',0,1.5),n('A4',1.5,.5),n('G4',2),n('F4',3),n('E4',4),n('F4',5),n('G4',6,2),
+    n('D4',8),n('E4',9),n('F4',10,2),n('E4',12),n('F4',13),n('G4',14,2),
+    n('G4',16,1.5),n('A4',17.5,.5),n('G4',18),n('F4',19),n('E4',20),n('F4',21),n('G4',22,2),
+    n('D4',24,2),n('G4',26),n('E4',27),n('C4',28,4)];
+});
+
+addSong('pathetique','비창 소나타 2악장 (Pathetique)',60,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [
+    n('E4',0,2),n('F4',2),n('G4',3),n('A4',4,2),n('G4',6),n('F4',7),
+    l('A2',0,2),l('E3',0,2),l('A2',2,2),l('E3',2,2),l('A2',4,2),l('E3',4,2),l('D3',6,2),l('A3',6,2),
+    n('E4',8,3),n('D4',11),n('E4',12,2),n('C4',14,2),
+    l('A2',8,2),l('E3',8,2),l('G#2',10,2),l('E3',10,2),l('A2',12,2),l('E3',12,2),l('A2',14,2),l('E3',14,2),
+    n('E4',16,2),n('F4',18),n('G4',19),n('A4',20,2),n('B4',22),n('C5',23),
+    l('A2',16,2),l('E3',16,2),l('D3',18,2),l('A3',18,2),l('A2',20,2),l('E3',20,2),l('E2',22,2),l('B2',22,2),
+    n('B4',24,3),n('A4',27),n('G#4',28,2),n('A4',30,2),
+    l('A2',24,2),l('E3',24,2),l('E2',26,2),l('B2',26,2),l('E2',28,2),l('G#2',28,2),l('A2',30,2),l('E3',30,2)
+  ];
+});
+
+addSong('salut_damour','사랑의 인사 (Salut d&apos;Amour)',80,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [
+    n('E5',0,1.5),n('D#5',1.5,.5),n('E5',2),n('F#5',3),
+    l('E3',0,2),l('B3',0,2),l('E3',2,2),l('B3',2,2),
+    n('B5',4,2),n('A5',6),n('G#5',7),
+    l('E3',4,2),l('G#3',4,2),l('A2',6,2),l('E3',6,2),
+    n('A5',8,1.5),n('G#5',9.5,.5),n('A5',10),n('B5',11),
+    l('A2',8,2),l('E3',8,2),l('A2',10,2),l('E3',10,2),
+    n('E5',12,3),n('E5',15),
+    l('E3',12,2),l('G#3',12,2),l('E3',14,2),l('G#3',14,2),
+    n('E5',16,1.5),n('D#5',17.5,.5),n('E5',18),n('F#5',19),
+    l('E3',16,2),l('B3',16,2),l('E3',18,2),l('B3',18,2),
+    n('B5',20,2),n('A5',22),n('G#5',23),
+    l('E3',20,2),l('G#3',20,2),l('A2',22,2),l('E3',22,2),
+    n('F#5',24),n('G#5',25),n('A5',26),n('B5',27),
+    l('D3',24,2),l('F#3',24,2),l('E3',26,2),l('G#3',26,2),
+    n('E5',28,4),
+    l('A2',28,2),l('E3',28,2),l('A2',30,2),l('C#3',30,2)
+  ];
+});
+
+addSong('minute_waltz','강아지 왈츠 (Minute Waltz)',168,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [
+    n('D5',0,.5),n('E5',.5,.5),n('F5',1,.5),n('E5',1.5,.5),n('F5',2,.5),n('G5',2.5,.5),
+    l('D3',0,1.5),l('A3',0,1.5),l('D3',1.5,1.5),l('A3',1.5,1.5),
+    n('F5',3,.5),n('E5',3.5,.5),n('D5',4,.5),n('C#5',4.5,.5),n('D5',5,.5),n('E5',5.5,.5),
+    l('B2',3,1.5),l('F3',3,1.5),l('G2',4.5,1.5),l('E3',4.5,1.5),
+    n('D5',6,.5),n('C5',6.5,.5),n('B4',7,.5),n('A4',7.5,.5),n('G4',8,.5),n('F4',8.5,.5),
+    l('A2',6,1.5),l('D3',6,1.5),l('A2',7.5,1.5),l('C#3',7.5,1.5),
+    n('E4',9,.5),n('D4',9.5,.5),n('E4',10,.5),n('F4',10.5,.5),n('G4',11,.5),n('A4',11.5,.5),
+    l('D3',9,1.5),l('F3',9,1.5),l('A2',10.5,1.5),l('E3',10.5,1.5),
+    n('D5',12,.5),n('E5',12.5,.5),n('F5',13,.5),n('E5',13.5,.5),n('F5',14,.5),n('G5',14.5,.5),
+    l('D3',12,1.5),l('A3',12,1.5),l('D3',13.5,1.5),l('A3',13.5,1.5),
+    n('A5',15,.5),n('G5',15.5,.5),n('F5',16,.5),n('E5',16.5,.5),n('D5',17,.5),n('C#5',17.5,.5),
+    l('F2',15,1.5),l('C3',15,1.5),l('G2',16.5,1.5),l('B2',16.5,1.5),
+    n('D5',18,1.5),n('A4',19.5,1.5),n('D5',21,3),
+    l('D3',18,1.5),l('F#3',18,1.5),l('A2',19.5,1.5),l('D3',19.5,1.5),l('D2',21,3),l('A2',21,3)
+  ];
+});
+
+addSong('let_it_be','Let It Be',72,()=>{
+  const n=(note,t,d=1,h='R')=>({note,time:t,duration:d,hand:h});
+  const l=(note,t,d=1)=>({note,time:t,duration:d,hand:'L'});
+  return [
+    n('E4',0),n('E4',1),n('E4',2),n('D4',3),n('C4',4,2),n('D4',6),n('E4',7),
+    l('C3',0,2),l('G3',0,2),l('A2',2,2),l('E3',2,2),l('F2',4,2),l('C3',4,2),l('C3',6,2),l('G3',6,2),
+    n('D4',8,3),n('C4',11),n('C4',12,4),
+    l('C3',8,2),l('G3',8,2),l('G2',10,2),l('D3',10,2),l('F2',12,2),l('C3',12,2),l('C3',14,2),l('G3',14,2),
+    n('E4',16),n('E4',17),n('E4',18),n('D4',19),n('C4',20,2),n('D4',22),n('E4',23),
+    l('C3',16,2),l('G3',16,2),l('A2',18,2),l('E3',18,2),l('F2',20,2),l('C3',20,2),l('C3',22,2),l('G3',22,2),
+    n('D4',24,3),n('C4',27),n('C4',28,4),
+    l('C3',24,2),l('G3',24,2),l('G2',26,2),l('D3',26,2),l('F2',28,2),l('C3',28,2),l('C3',30,2),l('G3',30,2),
+    n('G4',32),n('G4',33),n('A4',34),n('G4',35),n('E4',36,2),n('D4',38),n('C4',39),
+    l('A2',32,2),l('E3',32,2),l('F2',34,2),l('C3',34,2),l('C3',36,2),l('G3',36,2),l('G2',38,2),l('D3',38,2),
+    n('D4',40,3),n('C4',43),n('C4',44,4),
+    l('F2',40,2),l('C3',40,2),l('C3',42,2),l('G3',42,2),l('C3',44,2),l('E3',44,2),l('G2',46,2),l('C3',46,2)
+  ];
+});
+
 // ================ BEYER LESSONS (No.1~10 기반) ================
 const LESSONS = { beyer: [], songs: [] };
 
@@ -1462,6 +1639,15 @@ LESSONS.songs.push(
   {id:'s25',name:'도레미 송',desc:'Sound of Music - Do Re Mi. 초급.',notes:SONGS['doremi'].notes,bpm:SONGS['doremi'].bpm},
   {id:'s26',name:'산토끼',desc:'동요 &quot;산토끼 토끼야&quot;. 초급 오른손.',notes:SONGS['산토끼'].notes,bpm:SONGS['산토끼'].bpm},
   {id:'s27',name:'에델바이스',desc:'Sound of Music - Edelweiss. 양손 초급.',notes:SONGS['edelweiss'].notes,bpm:SONGS['edelweiss'].bpm},
+  // v6 신규
+  {id:'s28',name:'징글벨',desc:'크리스마스 캐롤 Jingle Bells. 양손 초급.',notes:SONGS['징글벨'].notes,bpm:SONGS['징글벨'].bpm},
+  {id:'s29',name:'무궁화',desc:'동요 &quot;무궁화 꽃이 피었습니다&quot;. 초급.',notes:SONGS['무궁화'].notes,bpm:SONGS['무궁화'].bpm},
+  {id:'s30',name:'섬집 아기',desc:'동요 &quot;엄마가 섬 그늘에&quot;. 초급.',notes:SONGS['섬집아기'].notes,bpm:SONGS['섬집아기'].bpm},
+  {id:'s31',name:'런던다리',desc:'London Bridge Is Falling Down. 초급.',notes:SONGS['런던다리'].notes,bpm:SONGS['런던다리'].bpm},
+  {id:'s32',name:'비창 소나타 2악장',desc:'베토벤 - Pathetique 2악장. Ab장조 양손.',notes:SONGS['pathetique'].notes,bpm:SONGS['pathetique'].bpm},
+  {id:'s33',name:'사랑의 인사',desc:'엘가 - Salut d&apos;Amour. E장조 양손.',notes:SONGS['salut_damour'].notes,bpm:SONGS['salut_damour'].bpm},
+  {id:'s34',name:'강아지 왈츠',desc:'쇼팽 - Minute Waltz Op.64 No.1. Db장조 상급.',notes:SONGS['minute_waltz'].notes,bpm:SONGS['minute_waltz'].bpm},
+  {id:'s35',name:'Let It Be',desc:'Beatles - Let It Be. C장조 양손.',notes:SONGS['let_it_be'].notes,bpm:SONGS['let_it_be'].bpm},
 );
 
 // 바이엘에도 기본 BPM 부여
@@ -1473,46 +1659,168 @@ function saveProgress() { localStorage.setItem('piano-v3-progress', JSON.stringi
 function getLessonStars(id) { return progress[id] || 0; }
 function setLessonStars(id, stars) { progress[id] = Math.max(progress[id]||0, stars); saveProgress(); }
 
+// ================ FAVORITES ================
+let favorites = JSON.parse(localStorage.getItem('piano-v6-fav') || '[]');
+function saveFavorites() { localStorage.setItem('piano-v6-fav', JSON.stringify(favorites)); }
+function toggleFavorite(id) {
+  const idx = favorites.indexOf(id);
+  if (idx >= 0) favorites.splice(idx, 1); else favorites.push(id);
+  saveFavorites(); renderLearnList();
+}
+
+// ================ RECENTLY PLAYED ================
+let recentlyPlayed = JSON.parse(localStorage.getItem('piano-v6-recent') || '[]');
+function saveRecent() { localStorage.setItem('piano-v6-recent', JSON.stringify(recentlyPlayed)); }
+function addRecentlyPlayed(id) {
+  recentlyPlayed = recentlyPlayed.filter(r => r !== id);
+  recentlyPlayed.unshift(id);
+  if (recentlyPlayed.length > 8) recentlyPlayed = recentlyPlayed.slice(0, 8);
+  saveRecent();
+}
+
+// ================ BEST SCORES ================
+let bestScores = JSON.parse(localStorage.getItem('piano-v6-best') || '{}');
+function saveBestScores() { localStorage.setItem('piano-v6-best', JSON.stringify(bestScores)); }
+function setBestScore(id, score) {
+  if (!bestScores[id] || score > bestScores[id]) { bestScores[id] = score; saveBestScores(); }
+}
+
+// ================ SORT STATE ================
+let currentSort = 'default';
+let showFavOnly = false;
+
+// ================ HAND FILTER ================
+let handFilter = 'both';
+
+// ================ DIFFICULTY MAP ================
+const DIFF_MAP = {};
+['by1','by2','by3','by4','by5','by6','by7','by8','by9','by10',
+ 's1','s2','s3','s4','s5','s20','s23','s24','s25','s26','s27','s28','s29','s30','s31'].forEach(id => DIFF_MAP[id] = 1);
+['s6','s7','s8','s32','s33','s35'].forEach(id => DIFF_MAP[id] = 2);
+['s9','s10','s11','s12','s13'].forEach(id => DIFF_MAP[id] = 3);
+['s14','s15','s16','s17','s18','s19','s21','s22','s34'].forEach(id => DIFF_MAP[id] = 4);
+function getDiff(id) { return DIFF_MAP[id] || 1; }
+
 // ================ LEARN PANEL ================
+function renderLessonItem(l, showFav) {
+  const stars = getLessonStars(l.id);
+  const starStr = stars > 0 ? '&#9733;'.repeat(stars) + '&#9734;'.repeat(3-stars) : '';
+  const isFav = favorites.includes(l.id);
+  const best = bestScores[l.id];
+  const noteCount = l.notes ? l.notes.length : 0;
+  let meta = '';
+  if (best) meta += `<span class="best-score">${best}pt</span>`;
+  if (noteCount > 0) meta += `<span class="note-count">${noteCount}&#9835;</span>`;
+  const favHtml = showFav ? `<button class="fav-btn ${isFav?'active':''}" data-fav="${l.id}" title="즐겨찾기">${isFav?'&#9829;':'&#9825;'}</button>` : '';
+  return `<div class="lesson-item" data-lesson="${l.id}">
+    <span class="l-name">${l.name}${diffBadge(l.id)}</span>
+    <span class="l-meta">${meta}${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}${favHtml}</span>
+  </div>`;
+}
+
+function renderRecentSection() {
+  const sec = document.getElementById('recent-section');
+  const chips = document.getElementById('recent-chips');
+  if (!recentlyPlayed.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const allLessons = [...LESSONS.beyer, ...LESSONS.songs];
+  chips.innerHTML = recentlyPlayed.slice(0, 5).map(id => {
+    const l = allLessons.find(x => x.id === id);
+    if (!l) return '';
+    return `<div class="recent-chip" data-lesson="${id}">${l.name}</div>`;
+  }).join('');
+  chips.querySelectorAll('.recent-chip').forEach(c => {
+    c.addEventListener('click', () => openLesson(c.dataset.lesson));
+  });
+}
+
 function renderLearnList() {
   const el = document.getElementById('learn-list');
   el.style.display = '';
   document.getElementById('lesson-view').classList.remove('active');
+  renderRecentSection();
   let html = '';
 
-  // Beyer section
-  html += '<div class="learn-section"><h3>🎵 바이엘 기초 (No.1~10)</h3>';
-  LESSONS.beyer.forEach(l => {
-    const stars = getLessonStars(l.id);
-    const starStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3-stars) : '';
-    html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}${diffBadge(l.id)}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
-  });
-  html += '</div>';
-
-  // Songs by category
-  const categories = [
-    {title:'🎵 동요/찬송가 (초급)', ids:['s1','s2','s3','s4','s5','s20','s23','s24','s25','s26','s27']},
-    {title:'🎹 클래식 초급~중급', ids:['s6','s7','s8']},
-    {title:'🎼 클래식 중급', ids:['s9','s10','s11','s12','s13']},
-    {title:'🔥 클래식 상급', ids:['s14','s15','s16','s17','s18','s19']},
-    {title:'🎶 연주곡', ids:['s21','s22']},
-  ];
-  categories.forEach(cat => {
-    const items = cat.ids.map(id => LESSONS.songs.find(l => l.id === id)).filter(Boolean);
-    if (!items.length) return;
-    html += `<div class="learn-section"><h3>${cat.title}</h3>`;
-    items.forEach(l => {
-      const stars = getLessonStars(l.id);
-      const starStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3-stars) : '';
-      html += `<div class="lesson-item" data-lesson="${l.id}"><span class="l-name">${l.name}${diffBadge(l.id)}</span><span>${starStr ? '<span class="stars">'+starStr+'</span>' : '<span class="badge badge-new">NEW</span>'}</span></div>`;
-    });
+  if (currentSort === 'default' && !showFavOnly) {
+    html += '<div class="learn-section"><h3>&#127925; 바이엘 기초 (No.1~10)</h3>';
+    LESSONS.beyer.forEach(l => { html += renderLessonItem(l, false); });
     html += '</div>';
-  });
+    const categories = [
+      {title:'&#127925; 동요/찬송가 (초급)', ids:['s1','s2','s3','s4','s5','s20','s23','s24','s25','s26','s27','s28','s29','s30','s31']},
+      {title:'&#127929; 클래식 초급~중급', ids:['s6','s7','s8','s32','s33']},
+      {title:'&#127932; 클래식 중급', ids:['s9','s10','s11','s12','s13']},
+      {title:'&#128293; 클래식 상급', ids:['s14','s15','s16','s17','s18','s19','s34']},
+      {title:'&#127926; 팝/연주곡', ids:['s21','s22','s35']},
+    ];
+    categories.forEach(cat => {
+      const items = cat.ids.map(id => LESSONS.songs.find(l => l.id === id)).filter(Boolean);
+      if (!items.length) return;
+      html += `<div class="learn-section"><h3>${cat.title}</h3>`;
+      items.forEach(l => { html += renderLessonItem(l, true); });
+      html += '</div>';
+    });
+  } else {
+    let allItems = [...LESSONS.beyer, ...LESSONS.songs];
+    if (showFavOnly) allItems = allItems.filter(l => favorites.includes(l.id));
+    if (currentSort === 'name') allItems.sort((a,b) => a.name.localeCompare(b.name, 'ko'));
+    else if (currentSort === 'diff') allItems.sort((a,b) => getDiff(a.id) - getDiff(b.id));
+    else if (currentSort === 'recent') {
+      allItems.sort((a,b) => {
+        const ai = recentlyPlayed.indexOf(a.id);
+        const bi = recentlyPlayed.indexOf(b.id);
+        if (ai < 0 && bi < 0) return 0;
+        if (ai < 0) return 1;
+        if (bi < 0) return -1;
+        return ai - bi;
+      });
+    }
+    const label = showFavOnly ? '&#9829; 즐겨찾기' : currentSort === 'name' ? '이름순' : currentSort === 'diff' ? '난이도순' : '최근연주순';
+    html += `<div class="learn-section"><h3>${label} (${allItems.length}곡)</h3>`;
+    allItems.forEach(l => { html += renderLessonItem(l, true); });
+    html += '</div>';
+  }
   el.innerHTML = html;
   el.querySelectorAll('.lesson-item').forEach(item => {
-    item.addEventListener('click', () => openLesson(item.dataset.lesson));
+    item.addEventListener('click', e => {
+      if (e.target.closest('.fav-btn')) return;
+      openLesson(item.dataset.lesson);
+    });
+  });
+  el.querySelectorAll('.fav-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleFavorite(btn.dataset.fav);
+    });
   });
 }
+
+// Sort button listeners
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const s = btn.dataset.sort;
+    if (s === 'fav') {
+      showFavOnly = !showFavOnly;
+      btn.classList.toggle('active', showFavOnly);
+      if (showFavOnly) currentSort = 'default';
+    } else {
+      showFavOnly = false;
+      document.querySelector('.sort-btn[data-sort="fav"]').classList.remove('active');
+      currentSort = s;
+      document.querySelectorAll('.sort-btn:not([data-sort="fav"])').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    renderLearnList();
+  });
+});
+
+// Hand toggle listeners
+document.querySelectorAll('.hand-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    handFilter = btn.dataset.hand;
+    document.querySelectorAll('.hand-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
 
 function findLesson(id) { return [...LESSONS.beyer, ...LESSONS.songs].find(l => l.id === id); }
 
@@ -1534,7 +1842,8 @@ function openLesson(id) {
   };
   document.getElementById('btn-demo').onclick = () => {
     synthPracticeMode = false; synthWaitMode = false;
-    setSpeed(100);  // 정상 속도
+    setSpeed(100);
+    addRecentlyPlayed(id);
     startSynthesia(lesson.notes, baseBPM, true, null);
   };
   document.getElementById('btn-wait').onclick = () => {
@@ -1655,7 +1964,9 @@ function startSynthesia(notes, bpm, autoPlay, testId) {
   setTimeout(() => resizeSynthCanvas(), 50);
   setTimeout(() => resizeSynthCanvas(), 200);
 
-  synthNotes = notes.map((n,i) => ({...n, idx:i, played:false, result:null}));
+  let filteredNotes = notes;
+  if (handFilter !== 'both') filteredNotes = notes.filter(n => n.hand === handFilter || !n.hand);
+  synthNotes = filteredNotes.map((n,i) => ({...n, idx:i, played:false, result:null}));
   synthBPM = bpm;
   synthSpeed = parseInt(document.getElementById('speed').value) / 100;
   synthAutoPlay = autoPlay;
@@ -2132,10 +2443,15 @@ function synthLoop() {
       else if (pct >= 0.4) stars = 1;
       if (stars >= 3) launchConfetti();
       setLessonStars(synthTestId, stars);
+      const finalScore = synthScore.perfect*100+synthScore.good*50;
+      setBestScore(synthTestId, finalScore);
+      addRecentlyPlayed(synthTestId);
       document.getElementById('result-title').textContent = '테스트 결과';
       document.getElementById('result-stars').textContent = '★'.repeat(stars) + '☆'.repeat(3-stars);
+      const prevBest = bestScores[synthTestId] || 0;
+      const newRecord = finalScore >= prevBest ? ' &#127942; NEW RECORD!' : '';
       document.getElementById('result-body').innerHTML =
-        `<div class="score-detail">Perfect: ${synthScore.perfect} / Good: ${synthScore.good} / Miss: ${synthScore.miss}<br>최대 콤보: ${synthScore.maxCombo}<br>점수: ${synthScore.perfect*100+synthScore.good*50}</div>`;
+        `<div class="score-detail">Perfect: ${synthScore.perfect} / Good: ${synthScore.good} / Miss: ${synthScore.miss}<br>최대 콤보: ${synthScore.maxCombo}<br>점수: ${finalScore}pt${newRecord}<br>최고 기록: ${Math.max(finalScore, prevBest)}pt</div>`;
       document.getElementById('result-modal').classList.add('show');
       // Retry button: re-run the same test
       const _testId = synthTestId;
@@ -2330,6 +2646,8 @@ const LESSON_DIFF = {
   s9:'mid',s10:'mid',s11:'mid',s12:'mid',s13:'mid',
   s14:'hard',s15:'hard',s16:'hard',s17:'hard',s18:'expert',s19:'hard',
   s21:'mid',s22:'expert',
+  s28:'easy',s29:'easy',s30:'easy',s31:'easy',
+  s32:'mid',s33:'mid',s34:'expert',s35:'mid',
 };
 const DIFF_LABELS = {easy:'초급',mid:'중급',hard:'상급',expert:'최상급'};
 function diffBadge(id) {
@@ -2439,9 +2757,15 @@ const ACHIEVEMENTS = [
     const all=[...LESSONS.beyer,...LESSONS.songs];
     return all.every(l=>progress[l.id]&&progress[l.id]>=1);
   }},
+  {id:'ach_10songs',icon:'🎵',name:'10곡 클리어',desc:'10곡을 완주하세요',check:()=>stats.songsCompleted>=10},
+  {id:'ach_combo100',icon:'💥',name:'100 콤보',desc:'100 콤보를 달성하세요',check:()=>stats.maxCombo>=100},
+  {id:'ach_5000notes',icon:'🎶',name:'5000 음표',desc:'5000개의 노트를 연주하세요',check:()=>stats.totalNotes>=5000},
+  {id:'ach_fav',icon:'❤️',name:'첫 즐겨찾기',desc:'곡을 즐겨찾기에 추가하세요',check:()=>favorites.length>=1},
+  {id:'ach_streak30',icon:'🏅',name:'30일 연속',desc:'30일 연속 연습하세요',check:()=>stats.streak>=30},
+  {id:'ach_perfect50',icon:'💎',name:'정확도 50%',desc:'Perfect 비율 50% 이상 달성',check:()=>stats.totalNotes>0&&(stats.totalPerfect/stats.totalNotes)>=0.5},
 ];
-let unlockedAch = JSON.parse(localStorage.getItem('piano-v5-ach') || '[]');
-function saveAch() { localStorage.setItem('piano-v5-ach', JSON.stringify(unlockedAch)); }
+let unlockedAch = JSON.parse(localStorage.getItem('piano-v6-ach') || localStorage.getItem('piano-v5-ach') || '[]');
+function saveAch() { localStorage.setItem('piano-v6-ach', JSON.stringify(unlockedAch)); }
 
 function checkAchievements() {
   ACHIEVEMENTS.forEach(a => {
