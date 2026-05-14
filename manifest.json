@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v6",
+  "name": "Piano Master v7",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 35곡 수록, 즐겨찾기, 최고점수, 손별연습, 18업적, Synthesia 모드",
+  "description": "피아노 연주 및 학습 앱 - 45곡 수록, A-B 구간 반복, 일일 챌린지, 곡 미리듣기, 26개 업적, Synthesia 모드",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
