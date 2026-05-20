@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>피아노 마스터 v7</title>
-<meta name="description" content="피아노 마스터 v7 - 45곡 수록, Synthesia 모드, 일일 챌린지, A-B 구간 반복, 26개 업적, 61건반 MIDI 지원 피아노 학습 앱">
-<meta name="keywords" content="피아노,학습,Synthesia,MIDI,클래식,동요,리듬게임">
-<meta property="og:title" content="피아노 마스터 v7 - 45곡 피아노 학습">
-<meta property="og:description" content="45곡 수록, Synthesia 모드, 일일 챌린지, A-B 구간 반복, 26개 업적">
+<title>피아노 마스터 v8</title>
+<meta name="description" content="피아노 마스터 v8 - 52곡 수록, 4음색, 코드학습 24종, 스케일연습 8종, 학습경로, Synthesia 모드, 파티클이펙트, 공유카드, 개인랭킹, 36업적, 61건반 MIDI 지원">
+<meta name="keywords" content="피아노,학습,Synthesia,MIDI,클래식,동요,리듬게임,코드,스케일,Simply Piano">
+<meta property="og:title" content="피아노 마스터 v8 - 52곡 피아노 학습">
+<meta property="og:description" content="52곡, 4음색, 코드학습, 스케일연습, 학습경로, Synthesia, 파티클이펙트, 36업적">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="피아노 마스터 v7">
+<meta name="twitter:title" content="피아노 마스터 v8">
+<meta name="twitter:description" content="52곡 수록, 4음색 선택, 코드/스케일 학습, 파티클 이펙트, 36업적">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -192,7 +193,7 @@ select, input[type='range'] { background:var(--surface2); color:var(--text); bor
 <body>
 <div id="app">
   <div class="header">
-    <div class="header-title">피아노 마스터 v7</div>
+    <div class="header-title">피아노 마스터 v8</div>
     <div class="header-info">
       <span id="midiStatus">🎹 MIDI: --</span>
       <span id="audioStatus">🔊 Ready</span>
@@ -1284,6 +1285,255 @@ const SONGS = [
       {note:'A4',time:17.2,dur:0.5,hand:'R'},{note:'G#4',time:17.7,dur:0.3,hand:'R'},
       {note:'F#4',time:18,dur:0.3,hand:'R'},{note:'G#4',time:18.4,dur:0.3,hand:'R'},
       {note:'A4',time:18.8,dur:0.9,hand:'R'}
+    ]
+  },
+  // --- v8 추가곡: 동요 ---
+  {
+    id:'school_bell', name:'학교 종', category:'동요', difficulty:'easy',
+    icon:'🔔', color:'#f59e0b',
+    bpm:120, timeSignature:'4/4',
+    notes:[
+      {note:'G4',time:0,dur:0.4,hand:'R'},{note:'G4',time:0.5,dur:0.4,hand:'R'},
+      {note:'A4',time:1,dur:0.4,hand:'R'},{note:'A4',time:1.5,dur:0.4,hand:'R'},
+      {note:'G4',time:2,dur:0.4,hand:'R'},{note:'G4',time:2.5,dur:0.4,hand:'R'},
+      {note:'E4',time:3,dur:0.9,hand:'R'},
+      {note:'G4',time:4,dur:0.4,hand:'R'},{note:'G4',time:4.5,dur:0.4,hand:'R'},
+      {note:'E4',time:5,dur:0.4,hand:'R'},{note:'E4',time:5.5,dur:0.4,hand:'R'},
+      {note:'D4',time:6,dur:0.9,hand:'R'},
+      {note:'G4',time:7,dur:0.4,hand:'R'},{note:'G4',time:7.5,dur:0.4,hand:'R'},
+      {note:'A4',time:8,dur:0.4,hand:'R'},{note:'A4',time:8.5,dur:0.4,hand:'R'},
+      {note:'G4',time:9,dur:0.4,hand:'R'},{note:'G4',time:9.5,dur:0.4,hand:'R'},
+      {note:'E4',time:10,dur:0.9,hand:'R'},
+      {note:'G4',time:11,dur:0.4,hand:'R'},{note:'G4',time:11.5,dur:0.4,hand:'R'},
+      {note:'E4',time:12,dur:0.3,hand:'R'},{note:'D4',time:12.4,dur:0.3,hand:'R'},
+      {note:'E4',time:12.8,dur:0.3,hand:'R'},{note:'D4',time:13.2,dur:0.3,hand:'R'},
+      {note:'C4',time:13.6,dur:0.9,hand:'R'}
+    ]
+  },
+  {
+    id:'airplane', name:'비행기', category:'동요', difficulty:'easy',
+    icon:'✈️', color:'#0ea5e9',
+    bpm:120, timeSignature:'4/4',
+    notes:[
+      {note:'E4',time:0,dur:0.4,hand:'R'},{note:'D4',time:0.5,dur:0.4,hand:'R'},
+      {note:'C4',time:1,dur:0.4,hand:'R'},{note:'D4',time:1.5,dur:0.4,hand:'R'},
+      {note:'E4',time:2,dur:0.4,hand:'R'},{note:'E4',time:2.5,dur:0.4,hand:'R'},
+      {note:'E4',time:3,dur:0.9,hand:'R'},
+      {note:'D4',time:4,dur:0.4,hand:'R'},{note:'D4',time:4.5,dur:0.4,hand:'R'},
+      {note:'D4',time:5,dur:0.9,hand:'R'},
+      {note:'E4',time:6,dur:0.4,hand:'R'},{note:'G4',time:6.5,dur:0.4,hand:'R'},
+      {note:'G4',time:7,dur:0.9,hand:'R'},
+      {note:'E4',time:8,dur:0.4,hand:'R'},{note:'D4',time:8.5,dur:0.4,hand:'R'},
+      {note:'C4',time:9,dur:0.4,hand:'R'},{note:'D4',time:9.5,dur:0.4,hand:'R'},
+      {note:'E4',time:10,dur:0.4,hand:'R'},{note:'E4',time:10.5,dur:0.4,hand:'R'},
+      {note:'E4',time:11,dur:0.4,hand:'R'},{note:'E4',time:11.5,dur:0.4,hand:'R'},
+      {note:'D4',time:12,dur:0.4,hand:'R'},{note:'D4',time:12.5,dur:0.4,hand:'R'},
+      {note:'E4',time:13,dur:0.4,hand:'R'},{note:'D4',time:13.5,dur:0.4,hand:'R'},
+      {note:'C4',time:14,dur:0.9,hand:'R'}
+    ]
+  },
+  {
+    id:'spring_come', name:'봄이 왔다', category:'동요', difficulty:'easy',
+    icon:'🌷', color:'#f472b6',
+    bpm:110, timeSignature:'4/4',
+    notes:[
+      {note:'G4',time:0,dur:0.4,hand:'R'},{note:'E4',time:0.5,dur:0.4,hand:'R'},
+      {note:'E4',time:1,dur:0.9,hand:'R'},
+      {note:'F4',time:2,dur:0.4,hand:'R'},{note:'D4',time:2.5,dur:0.4,hand:'R'},
+      {note:'D4',time:3,dur:0.9,hand:'R'},
+      {note:'C4',time:4,dur:0.4,hand:'R'},{note:'D4',time:4.5,dur:0.4,hand:'R'},
+      {note:'E4',time:5,dur:0.4,hand:'R'},{note:'F4',time:5.5,dur:0.4,hand:'R'},
+      {note:'G4',time:6,dur:0.4,hand:'R'},{note:'G4',time:6.5,dur:0.4,hand:'R'},
+      {note:'G4',time:7,dur:0.9,hand:'R'},
+      {note:'G4',time:8,dur:0.4,hand:'R'},{note:'E4',time:8.5,dur:0.4,hand:'R'},
+      {note:'E4',time:9,dur:0.4,hand:'R'},{note:'E4',time:9.5,dur:0.4,hand:'R'},
+      {note:'F4',time:10,dur:0.4,hand:'R'},{note:'D4',time:10.5,dur:0.4,hand:'R'},
+      {note:'D4',time:11,dur:0.9,hand:'R'},
+      {note:'C4',time:12,dur:0.4,hand:'R'},{note:'E4',time:12.5,dur:0.4,hand:'R'},
+      {note:'G4',time:13,dur:0.4,hand:'R'},{note:'G4',time:13.5,dur:0.4,hand:'R'},
+      {note:'E4',time:14,dur:0.9,hand:'R'},
+      {note:'D4',time:15,dur:0.4,hand:'R'},{note:'D4',time:15.5,dur:0.4,hand:'R'},
+      {note:'D4',time:16,dur:0.4,hand:'R'},{note:'D4',time:16.5,dur:0.4,hand:'R'},
+      {note:'E4',time:17,dur:0.4,hand:'R'},{note:'F4',time:17.5,dur:0.9,hand:'R'},
+      {note:'E4',time:18.5,dur:0.4,hand:'R'},{note:'E4',time:19,dur:0.4,hand:'R'},
+      {note:'E4',time:19.5,dur:0.4,hand:'R'},{note:'F4',time:20,dur:0.4,hand:'R'},
+      {note:'E4',time:20.5,dur:0.4,hand:'R'},{note:'D4',time:21,dur:0.4,hand:'R'},
+      {note:'C4',time:21.5,dur:0.9,hand:'R'}
+    ]
+  },
+  // --- v8 추가곡: 한국 민요 ---
+  {
+    id:'bandal', name:'반달', category:'한국 민요', difficulty:'easy',
+    icon:'🌙', color:'#818cf8',
+    bpm:80, timeSignature:'3/4',
+    notes:[
+      {note:'A4',time:0,dur:0.5,hand:'R'},{note:'A4',time:0.6,dur:0.3,hand:'R'},
+      {note:'E5',time:1,dur:0.5,hand:'R'},{note:'D5',time:1.6,dur:0.3,hand:'R'},
+      {note:'C5',time:2,dur:0.5,hand:'R'},{note:'A4',time:2.6,dur:0.3,hand:'R'},
+      {note:'A4',time:3,dur:0.5,hand:'R'},{note:'C5',time:3.6,dur:0.3,hand:'R'},
+      {note:'D5',time:4,dur:0.5,hand:'R'},{note:'E5',time:4.6,dur:0.3,hand:'R'},
+      {note:'C5',time:5,dur:0.5,hand:'R'},{note:'A4',time:5.6,dur:0.3,hand:'R'},
+      {note:'G4',time:6,dur:0.5,hand:'R'},{note:'A4',time:6.6,dur:0.3,hand:'R'},
+      {note:'C5',time:7,dur:0.5,hand:'R'},{note:'D5',time:7.6,dur:0.3,hand:'R'},
+      {note:'E5',time:8,dur:0.9,hand:'R'},
+      {note:'C5',time:9,dur:0.5,hand:'R'},{note:'A4',time:9.6,dur:0.3,hand:'R'},
+      {note:'G4',time:10,dur:0.5,hand:'R'},{note:'A4',time:10.6,dur:0.3,hand:'R'},
+      {note:'A4',time:11,dur:0.9,hand:'R'}
+    ]
+  },
+  {
+    id:'mugunghwa', name:'무궁화', category:'한국 민요', difficulty:'easy',
+    icon:'🌺', color:'#e11d48',
+    bpm:100, timeSignature:'4/4',
+    notes:[
+      {note:'E4',time:0,dur:0.4,hand:'R'},{note:'G4',time:0.5,dur:0.4,hand:'R'},
+      {note:'G4',time:1,dur:0.4,hand:'R'},{note:'A4',time:1.5,dur:0.9,hand:'R'},
+      {note:'E4',time:2.5,dur:0.4,hand:'R'},{note:'G4',time:3,dur:0.4,hand:'R'},
+      {note:'G4',time:3.5,dur:0.4,hand:'R'},{note:'A4',time:4,dur:0.9,hand:'R'},
+      {note:'A4',time:5,dur:0.4,hand:'R'},{note:'G4',time:5.5,dur:0.4,hand:'R'},
+      {note:'E4',time:6,dur:0.4,hand:'R'},{note:'D4',time:6.5,dur:0.4,hand:'R'},
+      {note:'C4',time:7,dur:0.9,hand:'R'},
+      {note:'D4',time:8,dur:0.4,hand:'R'},{note:'E4',time:8.5,dur:0.4,hand:'R'},
+      {note:'G4',time:9,dur:0.4,hand:'R'},{note:'E4',time:9.5,dur:0.4,hand:'R'},
+      {note:'D4',time:10,dur:0.4,hand:'R'},{note:'C4',time:10.5,dur:0.4,hand:'R'},
+      {note:'D4',time:11,dur:0.9,hand:'R'},
+      {note:'E4',time:12,dur:0.4,hand:'R'},{note:'G4',time:12.5,dur:0.4,hand:'R'},
+      {note:'A4',time:13,dur:0.4,hand:'R'},{note:'G4',time:13.5,dur:0.4,hand:'R'},
+      {note:'E4',time:14,dur:0.4,hand:'R'},{note:'D4',time:14.5,dur:0.4,hand:'R'},
+      {note:'C4',time:15,dur:0.9,hand:'R'}
+    ]
+  },
+  // --- v8 추가곡: 팝/가요 ---
+  {
+    id:'clementine', name:'클레멘타인', category:'동요', difficulty:'easy',
+    icon:'🍊', color:'#f97316',
+    bpm:100, timeSignature:'3/4',
+    notes:[
+      {note:'C4',time:0,dur:0.5,hand:'R'},{note:'C4',time:0.6,dur:0.3,hand:'R'},
+      {note:'C4',time:1,dur:0.5,hand:'R'},{note:'G3',time:1.6,dur:0.5,hand:'R'},
+      {note:'E4',time:2.5,dur:0.5,hand:'R'},{note:'E4',time:3.1,dur:0.3,hand:'R'},
+      {note:'E4',time:3.5,dur:0.5,hand:'R'},{note:'C4',time:4.1,dur:0.5,hand:'R'},
+      {note:'C4',time:5,dur:0.5,hand:'R'},{note:'E4',time:5.6,dur:0.5,hand:'R'},
+      {note:'G4',time:6.2,dur:0.5,hand:'R'},{note:'G4',time:6.8,dur:0.5,hand:'R'},
+      {note:'F4',time:7.5,dur:0.5,hand:'R'},{note:'E4',time:8.1,dur:0.5,hand:'R'},
+      {note:'D4',time:8.7,dur:0.9,hand:'R'},
+      {note:'D4',time:10,dur:0.5,hand:'R'},{note:'D4',time:10.6,dur:0.3,hand:'R'},
+      {note:'F4',time:11,dur:0.5,hand:'R'},{note:'A4',time:11.6,dur:0.5,hand:'R'},
+      {note:'G4',time:12.5,dur:0.5,hand:'R'},{note:'F4',time:13.1,dur:0.5,hand:'R'},
+      {note:'E4',time:13.7,dur:0.5,hand:'R'},{note:'C4',time:14.3,dur:0.5,hand:'R'},
+      {note:'C4',time:15,dur:0.5,hand:'R'},{note:'E4',time:15.6,dur:0.5,hand:'R'},
+      {note:'D4',time:16.2,dur:0.5,hand:'R'},{note:'D4',time:16.8,dur:0.5,hand:'R'},
+      {note:'C4',time:17.5,dur:0.9,hand:'R'}
+    ]
+  },
+  {
+    id:'imagine_song', name:'Imagine', category:'팝', difficulty:'medium',
+    icon:'☮️', color:'#a78bfa',
+    bpm:76, timeSignature:'4/4',
+    notes:[
+      {note:'C4',time:0,dur:0.4,hand:'R'},{note:'D4',time:0.5,dur:0.4,hand:'R'},
+      {note:'E4',time:1,dur:0.4,hand:'R'},{note:'E4',time:1.5,dur:0.4,hand:'R'},
+      {note:'D4',time:2,dur:0.4,hand:'R'},{note:'C4',time:2.5,dur:0.4,hand:'R'},
+      {note:'C4',time:3,dur:0.4,hand:'R'},{note:'D4',time:3.5,dur:0.4,hand:'R'},
+      {note:'E4',time:4,dur:0.4,hand:'R'},{note:'E4',time:4.5,dur:0.4,hand:'R'},
+      {note:'D4',time:5,dur:0.9,hand:'R'},
+      {note:'C4',time:6,dur:0.4,hand:'R'},{note:'C4',time:6.5,dur:0.4,hand:'R'},
+      {note:'D4',time:7,dur:0.4,hand:'R'},{note:'E4',time:7.5,dur:0.4,hand:'R'},
+      {note:'F4',time:8,dur:0.4,hand:'R'},{note:'F4',time:8.5,dur:0.4,hand:'R'},
+      {note:'E4',time:9,dur:0.4,hand:'R'},{note:'D4',time:9.5,dur:0.4,hand:'R'},
+      {note:'C4',time:10,dur:0.4,hand:'R'},{note:'D4',time:10.5,dur:0.4,hand:'R'},
+      {note:'C4',time:11,dur:0.9,hand:'R'},
+      {note:'E4',time:12,dur:0.4,hand:'R'},{note:'F4',time:12.5,dur:0.4,hand:'R'},
+      {note:'G4',time:13,dur:0.9,hand:'R'},
+      {note:'G4',time:14,dur:0.4,hand:'R'},{note:'F4',time:14.5,dur:0.4,hand:'R'},
+      {note:'E4',time:15,dur:0.4,hand:'R'},{note:'D4',time:15.5,dur:0.4,hand:'R'},
+      {note:'E4',time:16,dur:0.4,hand:'R'},{note:'F4',time:16.5,dur:0.4,hand:'R'},
+      {note:'E4',time:17,dur:0.4,hand:'R'},{note:'D4',time:17.5,dur:0.4,hand:'R'},
+      {note:'C4',time:18,dur:0.9,hand:'R'},
+      {note:'C3',time:0,dur:0.9,hand:'L'},{note:'G3',time:2,dur:0.9,hand:'L'},
+      {note:'F3',time:4,dur:0.9,hand:'L'},{note:'C3',time:6,dur:0.9,hand:'L'},
+      {note:'F3',time:8,dur:0.9,hand:'L'},{note:'C3',time:10,dur:0.9,hand:'L'},
+      {note:'F3',time:12,dur:0.9,hand:'L'},{note:'G3',time:14,dur:0.9,hand:'L'},
+      {note:'C3',time:16,dur:0.9,hand:'L'}
+    ]
+  },
+  {
+    id:'morning_dew', name:'아침이슬', category:'팝', difficulty:'medium',
+    icon:'💧', color:'#22d3ee',
+    bpm:72, timeSignature:'4/4',
+    notes:[
+      {note:'A4',time:0,dur:0.4,hand:'R'},{note:'G4',time:0.5,dur:0.4,hand:'R'},
+      {note:'A4',time:1,dur:0.4,hand:'R'},{note:'C5',time:1.5,dur:0.4,hand:'R'},
+      {note:'D5',time:2,dur:0.9,hand:'R'},
+      {note:'E5',time:3,dur:0.4,hand:'R'},{note:'D5',time:3.5,dur:0.4,hand:'R'},
+      {note:'C5',time:4,dur:0.4,hand:'R'},{note:'A4',time:4.5,dur:0.9,hand:'R'},
+      {note:'A4',time:5.5,dur:0.4,hand:'R'},{note:'G4',time:6,dur:0.4,hand:'R'},
+      {note:'A4',time:6.5,dur:0.4,hand:'R'},{note:'C5',time:7,dur:0.4,hand:'R'},
+      {note:'D5',time:7.5,dur:0.9,hand:'R'},
+      {note:'E5',time:8.5,dur:0.4,hand:'R'},{note:'D5',time:9,dur:0.4,hand:'R'},
+      {note:'E5',time:9.5,dur:0.9,hand:'R'},
+      {note:'E5',time:10.5,dur:0.4,hand:'R'},{note:'D5',time:11,dur:0.4,hand:'R'},
+      {note:'C5',time:11.5,dur:0.4,hand:'R'},{note:'A4',time:12,dur:0.4,hand:'R'},
+      {note:'C5',time:12.5,dur:0.4,hand:'R'},{note:'D5',time:13,dur:0.9,hand:'R'},
+      {note:'A4',time:14,dur:0.4,hand:'R'},{note:'G4',time:14.5,dur:0.4,hand:'R'},
+      {note:'E4',time:15,dur:0.4,hand:'R'},{note:'G4',time:15.5,dur:0.4,hand:'R'},
+      {note:'A4',time:16,dur:0.9,hand:'R'}
+    ]
+  },
+  // --- v8 추가곡: 클래식 ---
+  {
+    id:'cancan', name:'캉캉 (오펜바흐)', category:'클래식', difficulty:'hard',
+    icon:'💃', color:'#dc2626',
+    bpm:180, timeSignature:'2/4',
+    notes:[
+      {note:'D5',time:0,dur:0.15,hand:'R'},{note:'D5',time:0.2,dur:0.15,hand:'R'},
+      {note:'E5',time:0.4,dur:0.15,hand:'R'},{note:'C5',time:0.6,dur:0.15,hand:'R'},
+      {note:'B4',time:0.8,dur:0.15,hand:'R'},{note:'C5',time:1,dur:0.15,hand:'R'},
+      {note:'D5',time:1.2,dur:0.3,hand:'R'},{note:'G4',time:1.6,dur:0.3,hand:'R'},
+      {note:'D5',time:2,dur:0.15,hand:'R'},{note:'D5',time:2.2,dur:0.15,hand:'R'},
+      {note:'E5',time:2.4,dur:0.15,hand:'R'},{note:'C5',time:2.6,dur:0.15,hand:'R'},
+      {note:'B4',time:2.8,dur:0.15,hand:'R'},{note:'C5',time:3,dur:0.15,hand:'R'},
+      {note:'D5',time:3.2,dur:0.3,hand:'R'},
+      {note:'G5',time:3.6,dur:0.15,hand:'R'},{note:'G5',time:3.8,dur:0.15,hand:'R'},
+      {note:'A5',time:4,dur:0.15,hand:'R'},{note:'F5',time:4.2,dur:0.15,hand:'R'},
+      {note:'E5',time:4.4,dur:0.15,hand:'R'},{note:'F5',time:4.6,dur:0.15,hand:'R'},
+      {note:'G5',time:4.8,dur:0.3,hand:'R'},{note:'G5',time:5.2,dur:0.15,hand:'R'},
+      {note:'D5',time:5.4,dur:0.15,hand:'R'},{note:'E5',time:5.6,dur:0.15,hand:'R'},
+      {note:'F5',time:5.8,dur:0.15,hand:'R'},{note:'E5',time:6,dur:0.15,hand:'R'},
+      {note:'D5',time:6.2,dur:0.15,hand:'R'},{note:'C5',time:6.4,dur:0.15,hand:'R'},
+      {note:'B4',time:6.6,dur:0.15,hand:'R'},{note:'A4',time:6.8,dur:0.15,hand:'R'},
+      {note:'B4',time:7,dur:0.15,hand:'R'},{note:'C5',time:7.2,dur:0.15,hand:'R'},
+      {note:'D5',time:7.4,dur:0.3,hand:'R'},{note:'G4',time:7.8,dur:0.6,hand:'R'}
+    ]
+  },
+  {
+    id:'chopin_etude', name:'이별의 곡 (쇼팽)', category:'클래식', difficulty:'expert',
+    icon:'💔', color:'#be185d',
+    bpm:100, timeSignature:'2/4',
+    notes:[
+      {note:'E5',time:0,dur:0.8,hand:'R'},
+      {note:'E5',time:1,dur:0.3,hand:'R'},{note:'D#5',time:1.35,dur:0.3,hand:'R'},
+      {note:'E5',time:1.7,dur:0.8,hand:'R'},
+      {note:'F5',time:2.6,dur:0.3,hand:'R'},{note:'D5',time:2.95,dur:0.8,hand:'R'},
+      {note:'C5',time:3.8,dur:0.3,hand:'R'},{note:'C5',time:4.15,dur:0.3,hand:'R'},
+      {note:'B4',time:4.5,dur:0.3,hand:'R'},{note:'C5',time:4.85,dur:0.3,hand:'R'},
+      {note:'D5',time:5.2,dur:0.3,hand:'R'},{note:'C5',time:5.55,dur:0.3,hand:'R'},
+      {note:'B4',time:5.9,dur:0.3,hand:'R'},{note:'A4',time:6.25,dur:0.3,hand:'R'},
+      {note:'G#4',time:6.6,dur:0.3,hand:'R'},{note:'A4',time:6.95,dur:0.8,hand:'R'},
+      {note:'E5',time:8,dur:0.8,hand:'R'},
+      {note:'E5',time:9,dur:0.3,hand:'R'},{note:'D#5',time:9.35,dur:0.3,hand:'R'},
+      {note:'E5',time:9.7,dur:0.8,hand:'R'},
+      {note:'F5',time:10.6,dur:0.3,hand:'R'},{note:'D5',time:10.95,dur:0.8,hand:'R'},
+      {note:'C5',time:11.8,dur:0.3,hand:'R'},{note:'B4',time:12.15,dur:0.3,hand:'R'},
+      {note:'A4',time:12.5,dur:0.3,hand:'R'},{note:'G#4',time:12.85,dur:0.3,hand:'R'},
+      {note:'A4',time:13.2,dur:0.8,hand:'R'},
+      {note:'A3',time:0,dur:1.5,hand:'L'},{note:'E4',time:0,dur:1.5,hand:'L'},
+      {note:'A3',time:2,dur:1.5,hand:'L'},{note:'D4',time:2,dur:1.5,hand:'L'},
+      {note:'E3',time:4,dur:1.5,hand:'L'},{note:'B3',time:4,dur:1.5,hand:'L'},
+      {note:'A3',time:6,dur:1.5,hand:'L'},{note:'E4',time:6,dur:1.5,hand:'L'},
+      {note:'A3',time:8,dur:1.5,hand:'L'},{note:'E4',time:8,dur:1.5,hand:'L'},
+      {note:'A3',time:10,dur:1.5,hand:'L'},{note:'D4',time:10,dur:1.5,hand:'L'},
+      {note:'E3',time:12,dur:1.5,hand:'L'},{note:'A3',time:12,dur:1.5,hand:'L'}
     ]
   },
 ];
@@ -2601,7 +2851,7 @@ class PianoApp {
         <h3>ℹ️ 정보</h3>
         <div class="setting-row">
           <label>버전</label>
-          <span>v7.0</span>
+          <span>v8.0</span>
         </div>
         <div class="setting-row">
           <label>수록곡</label>
@@ -2732,5 +2982,7 @@ function init() {
 }
 window.addEventListener('load', init);
 </script>
+<script src="v7_patch.js"></script>
+<script src="v8_patch.js"></script>
 </body>
 </html>

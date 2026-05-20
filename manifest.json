@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v7",
+  "name": "Piano Master v8",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 45곡 수록, A-B 구간 반복, 일일 챌린지, 곡 미리듣기, 26개 업적, Synthesia 모드",
+  "description": "피아노 연주 및 학습 앱 - 52곡 수록, 4음색 선택, 코드학습 24종, 스케일연습 8종, 학습경로, Synthesia 모드, 파티클 이펙트, 공유카드, 개인랭킹, 36개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -9,6 +9,18 @@
   "theme_color": "#0a0e1a",
   "lang": "ko",
   "categories": ["education", "music", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "코드 학습",
+      "url": "./piano-v3.html#chords",
+      "description": "24종 코드 인터랙티브 학습"
+    },
+    {
+      "name": "스케일 연습",
+      "url": "./piano-v3.html#scales",
+      "description": "8종 스케일 상행/하행/왕복 연습"
+    }
+  ],
   "icons": [
     {
       "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e1a'/%3E%3Crect x='8' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='15' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='22' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='29' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='36' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='43' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='50' y='12' width='6' height='32' rx='1' fill='%23fff'/%3E%3Crect x='13' y='12' width='3' height='20' rx='1' fill='%23222'/%3E%3Crect x='20' y='12' width='3' height='20' rx='1' fill='%23222'/%3E%3Crect x='34' y='12' width='3' height='20' rx='1' fill='%23222'/%3E%3Crect x='41' y='12' width='3' height='20' rx='1' fill='%23222'/%3E%3Crect x='48' y='12' width='3' height='20' rx='1' fill='%23222'/%3E%3C/svg%3E",
