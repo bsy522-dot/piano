@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v8",
+  "name": "Piano Master v9",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 52곡 수록, 4음색 선택, 코드학습 24종, 스케일연습 8종, 학습경로, Synthesia 모드, 파티클 이펙트, 공유카드, 개인랭킹, 36개 업적",
+  "description": "피아노 연주 및 학습 앱 - 62곡 수록, 메트로놈, 음악이론 15항목, 연주분석 대시보드, 조옮김, 듀엣모드, AI곡추천, 음정트레이닝, 4음색, 코드24종, 스케일8종, 48개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -11,14 +11,14 @@
   "categories": ["education", "music", "entertainment"],
   "shortcuts": [
     {
-      "name": "코드 학습",
-      "url": "./piano-v3.html#chords",
-      "description": "24종 코드 인터랙티브 학습"
+      "name": "메트로놈",
+      "url": "./piano-v3.html#metronome",
+      "description": "BPM 조절 메트로놈 - Largo/Andante/Allegro/Presto"
     },
     {
-      "name": "스케일 연습",
-      "url": "./piano-v3.html#scales",
-      "description": "8종 스케일 상행/하행/왕복 연습"
+      "name": "음정 트레이닝",
+      "url": "./piano-v3.html#interval",
+      "description": "12종 음정 인터벌 청음 퀴즈"
     }
   ],
   "icons": [
