@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v9",
+  "name": "Piano Master v10",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 62곡 수록, 메트로놈, 음악이론 15항목, 연주분석 대시보드, 조옮김, 듀엣모드, AI곡추천, 음정트레이닝, 4음색, 코드24종, 스케일8종, 48개 업적",
+  "description": "피아노 연주 및 학습 앱 - 72곡 수록, 시보드리딩, 리듬트레이닝, 피아노퀴즈 15문, 공유카드, 주간챌린지, 워밍업빌더, 난이도가이드, 즐겨찾기, 메트로놈, 음악이론 15항목, 4음색, 코드24종, 스케일8종, 60개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -11,14 +11,19 @@
   "categories": ["education", "music", "entertainment"],
   "shortcuts": [
     {
-      "name": "메트로놈",
-      "url": "./piano-v3.html#metronome",
-      "description": "BPM 조절 메트로놈 - Largo/Andante/Allegro/Presto"
+      "name": "시보드 리딩",
+      "url": "./piano-v3.html#sight-reading",
+      "description": "오선보 읽기 훈련 - 13음 랜덤 출제"
     },
     {
-      "name": "음정 트레이닝",
-      "url": "./piano-v3.html#interval",
-      "description": "12종 음정 인터벌 청음 퀴즈"
+      "name": "리듬 트레이닝",
+      "url": "./piano-v3.html#rhythm",
+      "description": "8종 리듬 패턴 TAP 연습"
+    },
+    {
+      "name": "피아노 퀴즈",
+      "url": "./piano-v3.html#quiz",
+      "description": "피아노 지식 퀴즈 15문항"
     }
   ],
   "icons": [
