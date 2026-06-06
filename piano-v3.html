@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>피아노 마스터 v10</title>
-<meta name="description" content="피아노 마스터 v10 - 72곡 수록, 시보드리딩, 리듬트레이닝, 피아노퀴즈15문, 공유카드, 주간챌린지, 워밍업빌더, 난이도가이드, 즐겨찾기, 메트로놈, 음악이론, 4음색, 60업적, 61건반 MIDI">
-<meta name="keywords" content="피아노,학습,Synthesia,MIDI,클래식,동요,리듬게임,코드,스케일,Simply Piano,메트로놈,음악이론,조옮김,듀엣,음정훈련,시보드리딩,퀴즈,공유카드">
-<meta property="og:title" content="피아노 마스터 v10 - 72곡 피아노 학습">
-<meta property="og:description" content="72곡, 시보드리딩, 리듬트레이닝, 퀴즈15문, 공유카드, 주간챌린지, 워밍업, 난이도가이드, 60업적">
+<title>피아노 마스터 v11</title>
+<meta name="description" content="피아노 마스터 v11 - 82곡 수록, 음감훈련, 코드진행연습8종, 연주분석대시보드Canvas, 연습실8종, 랜덤연주, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈30문, 시보드리딩, 리듬트레이닝, 공유카드, 주간챌린지, 워밍업빌더, 난이도가이드, 즐겨찾기, 메트로놈, 음악이론, 4음색, 72업적, 61건반 MIDI">
+<meta name="keywords" content="피아노,학습,Synthesia,MIDI,클래식,동요,리듬게임,코드,스케일,Simply Piano,메트로놈,음악이론,조옮김,듀엣,음정훈련,시보드리딩,퀴즈,공유카드,음감,코드진행,연습실,작곡,양손훈련,작곡가">
+<meta property="og:title" content="피아노 마스터 v11 - 82곡 피아노 학습">
+<meta property="og:description" content="82곡, 음감훈련, 코드진행8종, 연주분석대시보드, 연습실, 랜덤연주, 작곡놀이터, 양손훈련, 작곡가갤러리, 퀴즈30문, 72업적">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="피아노 마스터 v10">
-<meta name="twitter:description" content="72곡, 시보드리딩, 리듬트레이닝, 피아노퀴즈15문, 공유카드, 주간챌린지, 워밍업빌더, 60업적">
+<meta name="twitter:title" content="피아노 마스터 v11">
+<meta name="twitter:description" content="82곡, 음감훈련, 코드진행, 연주분석, 연습실, 랜덤연주, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈30문, 72업적">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -193,7 +193,7 @@ select, input[type='range'] { background:var(--surface2); color:var(--text); bor
 <body>
 <div id="app">
   <div class="header">
-    <div class="header-title">피아노 마스터 v10</div>
+    <div class="header-title">피아노 마스터 v11</div>
     <div class="header-info">
       <span id="midiStatus">🎹 MIDI: --</span>
       <span id="audioStatus">🔊 Ready</span>
@@ -826,9 +826,9 @@ const SONGS = [
       {note:'D5',time:12,dur:1.5,hand:'R'},{note:'Bb4',time:14,dur:1.5,hand:'R'}
     ]
   },
-  // --- 팔 ---
+  // --- 팝 ---
   {
-    id:'chopsticks', name:'젖가락 행진곡', category:'팔', difficulty:'easy',
+    id:'chopsticks', name:'젖가락 행진곡', category:'팝', difficulty:'easy',
     icon:'🥢', color:'#f59e0b',
     bpm:140, timeSignature:'4/4',
     notes:[
@@ -852,7 +852,7 @@ const SONGS = [
     ]
   },
   {
-    id:'heart_and_soul', name:'Heart and Soul', category:'팔', difficulty:'easy',
+    id:'heart_and_soul', name:'Heart and Soul', category:'팝', difficulty:'easy',
     icon:'❤️', color:'#e11d48',
     bpm:110, timeSignature:'4/4',
     notes:[
@@ -877,7 +877,7 @@ const SONGS = [
     ]
   },
   {
-    id:'river', name:'리버 플로우즈 인 유', category:'팔', difficulty:'medium',
+    id:'river', name:'리버 플로우즈 인 유', category:'팝', difficulty:'medium',
     icon:'🌊', color:'#0284c7',
     bpm:72, timeSignature:'4/4',
     notes:[
@@ -902,7 +902,7 @@ const SONGS = [
     ]
   },
   {
-    id:'let_it_be', name:'Let It Be', category:'팔', difficulty:'medium',
+    id:'let_it_be', name:'Let It Be', category:'팝', difficulty:'medium',
     icon:'🌾', color:'#65a30d',
     bpm:72, timeSignature:'4/4',
     notes:[
@@ -925,7 +925,7 @@ const SONGS = [
     ]
   },
   {
-    id:'yesterday', name:'Yesterday', category:'팔', difficulty:'medium',
+    id:'yesterday', name:'Yesterday', category:'팝', difficulty:'medium',
     icon:'🌅', color:'#d97706',
     bpm:100, timeSignature:'4/4',
     notes:[
@@ -2986,5 +2986,6 @@ window.addEventListener('load', init);
 <script src="v8_patch.js"></script>
 <script src="v9_patch.js"></script>
 <script src="v10_patch.js"></script>
+<script src="v11_patch.js"></script>
 </body>
 </html>
