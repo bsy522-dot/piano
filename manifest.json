@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v11",
+  "name": "Piano Master v12",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 82곡 수록, 음감훈련12종, 코드진행연습8종, 연주분석대시보드Canvas, 연습실8종, 랜덤연주, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈30문, 시보드리딩, 리듬트레이닝, 공유카드, 주간챌린지, 워밍업빌더, 난이도가이드, 즐겨찾기, 메트로놈, 음악이론15항목, 4음색, 코드24종, 스케일8종, 72개 업적",
+  "description": "피아노 연주 및 학습 앱 - 92곡 수록, 시보드리딩트레이너, 리듬패턴연습10종, 음악사타임라인12시대, 연습스트릭&목표, 공연모드Canvas, 테크닉드릴8종, 곡추천엔진, 연습캘린더, 음감훈련12종, 코드진행8종, 연주분석Canvas, 연습실8종, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈45문, 84개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -11,24 +11,34 @@
   "categories": ["education", "music", "entertainment"],
   "shortcuts": [
     {
-      "name": "음감 훈련",
-      "url": "./piano-v3.html#ear-training",
-      "description": "12종 음정 인식 훈련"
+      "name": "시보드리딩",
+      "url": "./piano-v3.html#sight-reading",
+      "description": "오선보 음표 읽기 훈련"
     },
     {
-      "name": "연습실",
-      "url": "./piano-v3.html#practice-room",
-      "description": "스케일/아르페지오 8종 연습"
+      "name": "리듬 패턴",
+      "url": "./piano-v3.html#rhythm",
+      "description": "10종 리듬 패턴 연습"
     },
     {
-      "name": "연주 분석",
-      "url": "./piano-v3.html#analytics",
-      "description": "5축 레이더 연주 분석 대시보드"
+      "name": "공연 모드",
+      "url": "./piano-v3.html#perform",
+      "description": "무대 위 공연 시뮬레이션"
     },
     {
-      "name": "피아노 퀴즈 v2",
-      "url": "./piano-v3.html#quiz2",
-      "description": "피아노 지식 퀴즈 30문항"
+      "name": "피아노 퀴즈 v3",
+      "url": "./piano-v3.html#quiz3",
+      "description": "피아노 심화 퀴즈 45문항"
+    },
+    {
+      "name": "음악사 타임라인",
+      "url": "./piano-v3.html#history",
+      "description": "12시대 음악 역사 탐험"
+    },
+    {
+      "name": "연습 캘린더",
+      "url": "./piano-v3.html#calendar",
+      "description": "월간 연습 기록 캘린더"
     }
   ],
   "icons": [
