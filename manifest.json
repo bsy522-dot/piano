@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v12",
+  "name": "Piano Master v13",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 92곡 수록, 시보드리딩트레이너, 리듬패턴연습10종, 음악사타임라인12시대, 연습스트릭&목표, 공연모드Canvas, 테크닉드릴8종, 곡추천엔진, 연습캘린더, 음감훈련12종, 코드진행8종, 연주분석Canvas, 연습실8종, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈45문, 84개 업적",
+  "description": "피아노 연주 및 학습 앱 - 102곡 수록, 코드사전24종Canvas, 스케일트레이너12종, 메트로놈Pro, 듀엣모드6곡, 음악이론교실12강, 일일도전, 종합리포트Canvas, 연습일지, 시보드리딩트레이너, 리듬패턴연습10종, 음악사타임라인12시대, 연습스트릭&목표, 공연모드Canvas, 테크닉드릴8종, 곡추천엔진, 연습캘린더, 음감훈련12종, 코드진행8종, 연주분석Canvas, 연습실8종, 작곡놀이터, 양손독립훈련, 작곡가갤러리12인, 퀴즈60문, 96개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -11,29 +11,39 @@
   "categories": ["education", "music", "entertainment"],
   "shortcuts": [
     {
+      "name": "코드 사전",
+      "url": "./piano-v3.html#chord-dict",
+      "description": "24종 코드 Canvas 시각화"
+    },
+    {
+      "name": "스케일 트레이너",
+      "url": "./piano-v3.html#scale-trainer",
+      "description": "12종 스케일 순차 연습"
+    },
+    {
+      "name": "메트로놈 Pro",
+      "url": "./piano-v3.html#metronome",
+      "description": "40-240 BPM 세분화 메트로놈"
+    },
+    {
+      "name": "듀엣 모드",
+      "url": "./piano-v3.html#duet",
+      "description": "AI 반주 듀엣 6곡"
+    },
+    {
+      "name": "음악 이론",
+      "url": "./piano-v3.html#theory",
+      "description": "12강 음악 이론 교실"
+    },
+    {
+      "name": "일일 도전",
+      "url": "./piano-v3.html#daily-challenge",
+      "description": "매일 새로운 3종 도전"
+    },
+    {
       "name": "시보드리딩",
       "url": "./piano-v3.html#sight-reading",
       "description": "오선보 음표 읽기 훈련"
-    },
-    {
-      "name": "리듬 패턴",
-      "url": "./piano-v3.html#rhythm",
-      "description": "10종 리듬 패턴 연습"
-    },
-    {
-      "name": "공연 모드",
-      "url": "./piano-v3.html#perform",
-      "description": "무대 위 공연 시뮬레이션"
-    },
-    {
-      "name": "피아노 퀴즈 v3",
-      "url": "./piano-v3.html#quiz3",
-      "description": "피아노 심화 퀴즈 45문항"
-    },
-    {
-      "name": "음악사 타임라인",
-      "url": "./piano-v3.html#history",
-      "description": "12시대 음악 역사 탐험"
     },
     {
       "name": "연습 캘린더",
