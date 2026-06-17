@@ -153,7 +153,7 @@ v11_patch.js: 신규 (1332줄 ~81KB, 자기완결형 IIFE 패치 모듈)
 | 2 | 음악이론 | 체계적 이론수업 | 없음 | 15항목 5카테고리 (음표/음정/조성/박자/피아노) |
 | 3 | 연주분석 | 주간/월간 리포트 | 기초통계 | 주간 바차트 + 난이도별 완주율 + 종합 대시보드 |
 | 4 | 조옴김 | 키 변경 지원 | 없음 | 반음 ±6 범위 실시간 조옴김 |
-| 5 | 듀엇모드 | 2인 연주 | 없음 | 건반 분할 P1/P2 시각적 구분 |
+| 5 | 듀엣모드 | 2인 연주 | 없음 | 건반 분할 P1/P2 시각적 구분 |
 | 6 | AI곡추천 | 추천 시스템 | 없음 | 난이도/장르/미완주 기반 AI 추천 엔진 |
 | 7 | 음정훈련 | 인터발 퀴즈 | 없음 | 12종 음정 4지선다 청음 퀴즈 10라운드 |
 | 8 | 속도도전 | 스피드 모드 | 기본 | 강화 (메트로놈 연동) |
@@ -169,7 +169,7 @@ v11_patch.js: 신규 (1332줄 ~81KB, 자기완결형 IIFE 패치 모듈)
 - 음악이론 UI: 5카테고리 탭 필터 + 읽기 체크 추적
 - 연주분석 대시보드: 4통계 카드 + 주간 바차트 + 난이도별 프로그레스바
 - 조옴김 컨트롤: +/- 버튼 + 색상 인디케이터
-- 듀엇 모드: 건반 분할 P1(보라)/P2(시안) 시각적 구분
+- 듀엣 모드: 건반 분할 P1(보라)/P2(시안) 시각적 구분
 - AI 추천: 난이도맞춤/선호장르/새장르탐험/점수개선 4종 추천
 - 음정 트레이닝: 12종 음정 4지선다 + 스트릭 추적 + 등급 부여
 
@@ -400,7 +400,7 @@ v11_patch.js: 신규 (1332줄 ~81KB, 자기완결형 IIFE 패치 모듈)
 - 실제 피아노 샘플 (Tone.Sampler 또는 Soundfont)
 - MIDI 파일 임포트/내보내기
 - K-Pop / 애니 OST 곡 추가
-- 멀티플레이어 (WebRTC 듀엇)
+- 멀티플레이어 (WebRTC 듀엣)
 - 연습 모드 자동정지 (틀린 노트에서)
 - 구간 반복 시 자동 되감기 (현재는 수동)
 - 조바꿈 기능 (Transpose)
@@ -622,3 +622,90 @@ v11_patch.js: 신규 (1332줄 ~81KB, 자기완결형 IIFE 패치 모듈)
 - manifest.json: v12.0 설명 + shortcuts 6종 (시보드리딩/리듬/공연/퀴즈v3/음악사/캘린더)
 - 키보드 단축키 8종: Shift+S/T/M/K/F/D/N/L
 - 업적 12개 추가 (72→84)
+
+---
+
+## 2026-06-17 — NEXTERA+PRISM 자동 에이전트 v13.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+- 비교 대상: Simply Piano, Piano Tiles, Flowkey
+- 열위 10개:
+  1. 코드 사전(Chord Dictionary) Canvas 시각화 없음 → Simply Piano 대비
+  2. 스케일 트레이너 순차 연습 없음 → Flowkey 대비
+  3. 전문 메트로놈(세분화/비주얼) 없음 → Simply Piano 대비
+  4. AI 반주 듀엣 모드 없음 → Flowkey 대비
+  5. 체계적 음악 이론 교실 없음 → Simply Piano 대비
+  6. 일일 도전(Daily Challenge) 시스템 없음 → Piano Tiles 대비
+  7. 종합 진도 리포트(Radar Chart) 없음 → Flowkey 대비
+  8. 연습 일지(Journal/Diary) 없음 → Simply Piano 대비
+  9. 클래식 명곡 추가 필요 (River Flows in You/Kiss The Rain 등) → 경쟁앱 대비
+  10. 퀴즈 심화 문항 추가 필요 → 교육앱 대비
+
+### Phase 2. 개발팀 전체 투입
+
+v13_patch.js: 신규 (943줄, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드 (UI/UX)
+- 코드 사전: Canvas 건반 시각화 24종 코드 + 구성음 표시 + 재생 버튼
+- 스케일 트레이너: 12종 스케일 카드 + 순차 재생 + 완료 추적
+- 메트로놈 Pro: BPM 슬라이더(40-240) + 세분화(1-4x) + 비트 시각화 도트 + 템포 프리셋
+- 듀엣 모드: 6곡 듀엣 카드 + AI 반주(Web Audio) + 멜로디/반주 분리
+- 음악 이론 교실: 12강 확장/접기 카드 + 읽기 추적
+- 일일 도전: 날짜 시드 기반 3종 로테이션 + 완료 추적 + 일일 리셋
+- 종합 리포트: Canvas 6축 레이더 차트 (연주력/이론/시보드리딩/리듬/코드/스케일)
+- 연습 일지: 5종 기분 선택 + 텍스트 메모 + 50건 CRUD
+- 퀵 액션 버튼 9종 곡 탭 상단 자동 삽입
+
+#### 백엔드/로직
+- 코드 사전: CHORD_DB 24종 (Major/Minor/7th/dim/aug 등), drawChordCanvas() Canvas 렌더링
+- 스케일: SCALES 12종 (6 Major + 6 minor), playScaleSequence() Web Audio 순차 재생
+- 메트로놈: setInterval 기반 비트, 세분화 곱셈, 강박/약박 구분 SFX
+- 듀엣: DUETS 6곡 데이터, AI 반주 자동 재생 (Web Audio 주파수 합성)
+- 이론: THEORY_LESSONS 12강 데이터, 읽기 완료 localStorage 추적
+- 일일 도전: 날짜 시드 해시 → 8개 풀에서 3종 선택
+- 리포트: Canvas 6축 레이더 (정규화 점수 0-100)
+- 일지: CRUD 50건 제한, 기분/날짜/내용 저장
+
+#### 콘텐츠 제작
+- 10곡 추가 (92→102): River Flows in You(이루마)/Kiss The Rain(이루마)/Comptine d'un autre ete(아멜리에OST)/Una Mattina(루도비코)/Nuvole Bianche(루도비코)/Gymnopedie No.1(사티)/Prelude C Major(바흐)/Swan Lake(차이코프스키)/Arabesque No.1(드뷔시)/Secret(노턴오리지널)
+- 퀴즈 v4 +15문 (45→60): 코드/스케일/메트로놈/듀엣/이론/작곡가 관련 심화 문항
+- 음악 이론 12강: 음표와박자/음정/장조와단조/코드기초/코드진행/스케일모드/리듬패턴/셈여림/음악형식/조옮김/악보기호/연주표현
+- 듀엣 6곡: 반짝반짝작은별/에델바이스/캐논/Love Me Tender/Moon River/Over The Rainbow
+
+#### 오디오 엔진
+- SFX 12종: chord_play/scale_note/scale_done/metro_tick/metro_accent/duet_start/theory_done/challenge_done/report_view/journal_save/quiz4_correct/v13_achieve
+- playChordAudio(): 코드 구성음 동시 재생 (삼각파 3음 합성)
+- playScaleSequence(): 스케일 음계 순차 재생 (사인파)
+
+#### 업적 시스템
+- 12업적 추가 (84→96): chord_student/chord_master/scale_student/scale_master/metro_user/duet_player/theory_student/theory_master/daily_clear/daily_7/quiz4_pass/v13_explorer
+
+#### 키보드 단축키
+- +8종: Shift+C(코드)/X(스케일)/O(메트로놈)/U(듀엣)/Y(이론)/I(도전)/R(리포트)/J(일지)
+
+### Phase 3. 품질팀 검증
+- **JS 구문 검증**: `node -c v13_patch.js` → PASS
+- **SW JS 검증**: `node -c sw.js` → PASS
+- **Manifest JSON**: PASS
+- **외부 CDN**: 0건 검출
+- **개인정보**: 0건 검출
+- **파일 크기**: v13_patch.js 943줄
+
+### Phase 4. 결과 요약
+| 항목 | v12 | v13 | 변화 |
+|------|-----|-----|------|
+| 곡 수 | 92 | 102 | +10 |
+| 업적 | 84 | 96 | +12 |
+| 퀴즈 | 45 | 60 | +15 |
+| SFX | 10 | 22 | +12 |
+| 키보드 | 8 | 16 | +8 |
+| 기능 | 8 | 17 | +9 |
+
+- v13_patch.js 신규 생성 (943줄, IIFE 자기완결형)
+- piano-v3.html: SEO 전면 갱신 (v13, 102곡, 96업적, 60퀴즈) + v13 스크립트 태그
+- sw.js: v12→v13 캐시 갱신 + v13_patch.js PRECACHE + 자동주입
+- manifest.json: v13.0 설명 + shortcuts 8종
+- 키보드 단축키 8종: Shift+C/X/O/U/Y/I/R/J
+- 업적 12개 추가 (84→96)
+- AUTO_REPORT.md 갱신
+- 커밋 + 푸시 완료
