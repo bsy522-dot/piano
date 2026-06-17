@@ -622,3 +622,52 @@ v11_patch.js: 신규 (1332줄 ~81KB, 자기완결형 IIFE 패치 모듈)
 - manifest.json: v12.0 설명 + shortcuts 6종 (시보드리딩/리듬/공연/퀴즈v3/음악사/캘린더)
 - 키보드 단축키 8종: Shift+S/T/M/K/F/D/N/L
 - 업적 12개 추가 (72→84)
+
+---
+
+## 2026-06-17 — NEXTERA+PRISM 자동 에이전트 v13.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+- 비교 대상: Simply Piano, Flowkey, Piano Tiles
+- 열위 10개:
+  1. 음계(스케일) 체계적 연습 부재 → Simply Piano 대비
+  2. 화음(코드) 학습 사전 없음 → Flowkey 대비
+  3. 데일리 워밍업 루틴 없음 → Simply Piano 대비
+  4. 음악 용어 사전/학습 없음 → 교육 앱 대비
+  5. 듀엣(연탄곡) 모드 없음 → Flowkey 대비
+  6. 종합 연습 분석 대시보드 부재 → Simply Piano 대비
+  7. 즐겨찾기 곡 관리 없음 → Piano Tiles 대비
+  8. 연주 결과 공유 카드 미흡 → Piano Tiles 대비
+  9. 곡 수 부족 (92곡) → Simply Piano 대비
+  10. 퀴즈 부족 (45문) → 교육 앱 대비
+
+### Phase 2. 개발팀 전체 투입
+- **12개 신기능** v13_patch.js IIFE 자기완결형 모듈 (866줄)
+  1. 🎵 음계 연습실 12종 — 장/단/5음/블루스/도리안/리디안/믹솔리디안/로크리안/하모닉단/멜로딕단/온음/반음계
+  2. 🎹 화음 백과 24종 — 메이저/마이너/7th/감/증/dim7/sus2/sus4 × 3키 + 오디오 시연
+  3. 🏋️ 데일리 워밍업 8종 — 5핑거/하농/아르페지오/옥타브/트릴/스케일릴레이/크로매틱/텐션릴리즈
+  4. 📖 음악 용어 사전 41항목 — 빠르기/셈여림/아티큘레이션/형식/장르/반복기호 카테고리
+  5. 🎭 듀엣 모드 6곡 — 하트&소울/젓가락행진곡/로우로우보트/보트멜로디/댄스파트너/캐논듀엣
+  6. 📊 연습 분석 Canvas — 레이더 차트 6축 + 총점 + 레벨 시스템
+  7. ⭐ 즐겨찾기 컬렉션 — MutationObserver 기반 동적 버튼 + 전용 관리 페이지
+  8. 🎴 공유 카드 Canvas — 그라데이션 배경 + 통계 그리드 + 다운로드/클립보드 복사
+  9. 🎶 10곡 추가 (92→102) — 녹턴Op.9/RiverFlows/전주곡C장조/Comptine/짐노페디/라캄파넬라/헝가리무곡/아라베스크1/곤돌라의노래/바람의노래
+  10. ❓ 퀴즈 v4 15문 추가 (45→60) — 템포/다이내믹/형식/조표/화성 심화 문제
+  11. 🏆 업적 12개 추가 (84→96) — scale_student/scale_master13/chord_explorer/warmup_first/warmup_routine/dict_reader/duet_player/fav_collector/share_first/songs_100/quiz4_pass/v13_explorer
+  12. 🔊 SFX 12종 + 키보드 단축키 8종 (Shift+C/H/W/O/U/A/V/E)
+
+### Phase 3. QA 검증
+- **JS 문법**: `node -c` PASS ✅
+- **JSON 유효성**: manifest.json PASS ✅
+- **괄호 균형**: () 940/940, {} 502/502, [] 116/116 — 모두 0차이 ✅
+- **외부 CDN**: 0건 검출 ✅
+- **개인정보**: 0건 검출 (공유카드 텍스트 수정 완료) ✅
+- **파일 크기**: v13_patch.js 866줄
+
+### Phase 4. 마무리
+- v13_patch.js 신규 생성 (866줄, IIFE 자기완결형)
+- piano-v3.html: SEO 전면 갱신 (v13, 102곡, 96업적, 60퀴즈) + v13 스크립트 태그 + 버전 v13.0
+- sw.js: v12→v13 캐시 갱신 + v13_patch.js PRECACHE + 자동주입
+- manifest.json: v13.0 설명 + shortcuts 10종 (기존6 + 음계/화음/워밍업/듀엣)
+- 키보드 단축키 8종: Shift+C/H/W/O/U/A/V/E
+- 업적 12개 추가 (84→96)
