@@ -1,4 +1,4 @@
-const CACHE_NAME = 'piano-master-v13';
+const CACHE_NAME = 'piano-master-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ const ASSETS = [
   './v11_patch.js',
   './v12_patch.js',
   './v13_patch.js',
+  './v14_patch.js',
   './manifest.json'
 ];
 
@@ -59,6 +60,9 @@ self.addEventListener('fetch', e => {
           }
           if (!html.includes('v13_patch.js') && html.includes('</body>')) {
             html = html.replace('</body>', '<script src="v13_patch.js"></script></body>');
+          }
+          if (!html.includes('v14_patch.js') && html.includes('</body>')) {
+            html = html.replace('</body>', '<script src="v14_patch.js"></script></body>');
           }
           const clone = new Response(html, {
             status: res.status,
