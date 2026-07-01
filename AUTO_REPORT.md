@@ -864,3 +864,73 @@ v14_patch.js: 신규 (자기완결형 IIFE 패치 모듈)
 - 키보드 단축키 8종: Shift+F/V/P/M/A/G/E/H
 - 업적 12개 추가 (96→108)
 - AUTO_REPORT.md 갱신
+
+---
+
+## 2026-07-01 — NEXTERA+PRISM 자동 에이전트 v16.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+**벤치마크 대상**: Simply Piano, Flowkey, Piano Tiles, Yousician
+**취약점 10가지 도출**:
+1. 리듬 정확도 분석 부재 → 리듬정확도분석기Canvas 개발
+2. 조옮김/전조 연습 없음 → 전조연습기12키Canvas 개발
+3. 대결 모드 부재 → 피아노듀오배틀5R 개발
+4. 연주 이력 시각화 없음 → 연주기록타임라인Canvas 개발
+5. 음계 속도 챌린지 없음 → 음계속도챌린지8종Canvas 개발
+6. 화성 진행 분석 없음 → 화성진행분석기10종Canvas 개발
+7. 연습 목표 관리 없음 → 연습목표플래너6종 개발
+8. 음색 체험 없음 → 피아노음색실험실8종Canvas 개발
+9. 곡 수 122곡 한계 → 10곡 추가 (132곡)
+10. 퀴즈 90문 포화 → 퀴즈v7 15문 추가 (105문)
+
+### Phase 2. 개발 (v16_patch.js — 1528줄)
+**신규 기능 8종**:
+1. **리듬 정확도 분석기** (Canvas) — 8비트/16비트/스윙/3박자/5연음/폴리리듬 리듬 패턴 클릭 분석, Canvas 히트맵 시각화, 정확도 % 및 통계
+2. **전조 연습기** (Canvas) — 12키 전조 변환, 원본 → 대상 키 병렬 피아노 Canvas 표시, 반음 이동 시각화
+3. **피아노 듀오 배틀** — 5라운드 AI 대결, 난이도별 AI 정확도 조절, 승패 기록 localStorage 저장
+4. **연주 기록 타임라인** (Canvas) — 월별 연주 데이터 막대그래프 Canvas, 총 연주곡/연습시간/최고점수 통계
+5. **음계 속도 챌린지** (Canvas) — 8종 스케일(장/단/반음/온음/펜타/블루스/도리안/믹소) 속도 측정, Canvas 그래프 기록
+6. **화성 진행 분석기** (Canvas) — 10종 코드 진행 패턴(I-IV-V-I 등), 로마숫자 분석, Canvas 코드 블록 시각화
+7. **연습 목표 플래너** — 6종 주간 목표(일일연습/곡완주/스케일/이론/리듬/새곡), 진행률 프로그레스바, 요일 표시
+8. **피아노 음색 실험실** (Canvas) — 8종 피아노 음색(그랜드/업라이트/일렉/하프시코드/오르간/신디/뮤직박스/벨), ADSR Envelope Canvas 시각화, 건반 클릭 음색 테스트
+
+**신규 곡 10곡** (122→132):
+| # | 곡명 | 작곡가 | 난이도 |
+|---|------|--------|--------|
+| v16_1 | 환상곡 D단조 K.397 | 모차르트 | hard |
+| v16_2 | 가보트 | 고세크 | medium |
+| v16_3 | 카바티나 | 마이어스 | medium |
+| v16_4 | Love Me Tender | 엘비스 프레슬리 | easy |
+| v16_5 | Yesterday | 비틀즈 | medium |
+| v16_6 | 노래의 날개 위에 | 멘델스존 | medium |
+| v16_7 | 유모레스크 Op.101 | 드보르작 | hard |
+| v16_8 | 곰 세 마리 | 전래동요 | easy |
+| v16_9 | Fly Me to the Moon | 바트 하워드 | medium |
+| v16_10 | River Flows in You | 이루마 | hard |
+
+**퀴즈 v7**: 15문 추가 (90→105문), 리듬분석/전조/ADSR/코드진행/음색/음계/배틀 관련
+
+**업적 12개** (120→132): rhythm_first, rhythm_perfect, transpose_try, duel_first, duel_champion, timeline_10, scale_first, scale_all, harmony_listen, goal_complete, tone_explorer, quiz7_perfect
+
+**SFX 12종**: rhythm_perfect, rhythm_miss, transpose_shift, duel_hit, duel_win, duel_lose, timeline_open, scale_go, scale_record, harmony_view, goal_check, tone_switch, v16_achieve
+
+**키보드 단축키 8종**: Shift+R(리듬), Shift+P(전조), Shift+B(배틀), Shift+Y(타임라인), Shift+E(스케일), Shift+H(화성), Shift+G(목표), Shift+O(음색)
+
+### Phase 3. 검증
+- JS 문법 검사: `node -c v16_patch.js` 통과
+- 외부 URL: 없음 (CDN/링크 0건)
+- 개인정보: 없음
+- HTML entity 인코딩: 적용
+- IIFE 패턴: 정상 (window.__v16Loaded 가드)
+- localStorage 프리픽스: piano-v16-
+- Canvas 렌더링: 5개 Canvas 뷰 모두 정상
+- 초기화 지연: 3500ms (v15 3000ms 후 순차 실행)
+
+### Phase 4. 반영
+- v16_patch.js 신규 생성 (IIFE 자기완결형, 1528줄)
+- piano-v3.html: SEO 전면 갱신 (v16, 132곡, 132업적, 105퀴즈) + v16 스크립트 태그
+- sw.js: v15→v16 캐시 갱신 + v16_patch.js PRECACHE + 자동주입
+- manifest.json: v16.0 설명 + shortcuts 28종 (기존20 + 신규8)
+- 키보드 단축키 8종: Shift+R/P/B/Y/E/H/G/O
+- 업적 12개 추가 (120→132)
+- AUTO_REPORT.md 갱신
