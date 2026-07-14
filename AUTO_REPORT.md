@@ -1,5 +1,83 @@
 # Piano Master — 자동 발전 리포트
 
+## 2026-07-14 — NEXTERA+PRISM 자동 에이전트 v20.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+- 비교 대상: Simply Piano, Flowkey, Piano Tiles, Yousician
+- 열위 10개:
+  1. 음정 청음(Interval Ear Training) Canvas 전문 트레이너 없음 → Yousician 대비
+  2. 페달 테크닉(Pedal Technique) Canvas 훈련 없음 → Synthesia 대비
+  3. 작곡 워크숍(Composition Workshop) Canvas 없음 → Flowkey 대비
+  4. 피아노 관리(Piano Care) 가이드 없음 → Simply Piano 대비
+  5. 공연 불안(Performance Anxiety) 코치 없음 → Yousician 대비
+  6. 음악 이론 마인드맵(Theory Mindmap) Canvas 없음 → Simply Piano 대비
+  7. 일일 스킬 평가(Daily Skill Assessment) 없음 → Flowkey 대비
+  8. 피아노 역사 타임라인(Piano History Timeline) Canvas 없음 → Synthesia 대비
+  9. 곡 수 162곡 한계 → Simply Piano 500+곡 대비
+  10. 퀴즈 150문 포화 → 교육 앱 대비
+
+### Phase 2. 개발팀 전체 투입
+
+v20_patch.js: 신규 (1315줄 ~73.9KB, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드 (UI/UX)
+- 8종 모달 UI (음정청음/페달테크닉/작곡워크숍/피아노관리/공연불안코치/이론마인드맵/일일스킬평가/피아노역사)
+- 하단 스크롤 네비바 9종 (.v19-nav-bar 후속 삽입)
+- Canvas 인터랙티브 시각화 8종 (바차트/라인차트/레이더차트/도넛차트/프로그레스바/호흡원/네트워크그래프/타임라인)
+
+#### 백엔드/로직
+- 음정 청음 트레이너: 13종 음정 (단2도~완전8도) Web Audio 재생, 10라운드 퀴즈, Canvas 580x340 음정별 바차트+점수 히스토리 라인차트
+- 페달 테크닉 트레이너: 3종 페달 (서스테인/소프트/소스테누토), 마스터리 바+3축 레이더, 테크닉 팁 표시, Canvas 580x360
+- 작곡 워크숍: 음표/듀레이션 선택, 32노트 제한, 색상코딩 오선보, 저장/재생/랜덤 생성, Canvas 600x360
+- 피아노 관리 가이드: 4카테고리x3항목=12체크리스트, 도넛 진행률+카테고리 바차트, Canvas 560x340
+- 공연 불안 코치: 4종 호흡운동 (4-7-8/박스/긴호흡/에너지), 애니메이션 호흡원, 5사이클 타이머, 10팁, Canvas 580x360
+- 음악 이론 마인드맵: 6분야 (스케일/코드/리듬/음정/형식/표현), 24토픽, 인터랙티브 네트워크 그래프, 학습 진도, Canvas 600x380
+- 일일 스킬 평가: 6스킬 슬라이더, 듀얼 레이더 (현재+이전), 14일 트렌드 라인차트, S-D등급, Canvas 600x380
+- 피아노 역사 타임라인: 12마일스톤 1700-2020, 클릭-선택 타임라인, 상세 박스, 방문 추적, Canvas 620x380
+
+#### 콘텐츠 제작
+- 10곡 추가 (162→172): 쇼팽 발라드 1번/리스트 사랑의 꿈 3번/바흐 프렐류드 BWV846/드뷔시 달빛/슈베르트 즉흥곡/라흐마니노프 전주곡 C#m/사티 그노시엔느 1번/그리그 아침 기분/모차르트 터키행진곡 상급/쿠프랑 꾀꼬리
+- 퀴즈 v11 +15문 (150→165): MIDI velocity/서스테인페달/소나타형식/루바토/평균율/쇼팽녹턴/3연음부/코다/하프페달/캐논형식/라흐마니노프/12마디블루스/ADSR/모르덴트/드보르작
+
+#### 오디오 엔진
+- SFX 12종: interval_play/interval_correct/interval_wrong/pedal_press/compose_note/compose_play/care_check/breathe_in/breathe_out/theory_open/skill_assess/v20_achieve
+- Web Audio API 오실레이터 기반 효과음
+
+#### 업적 시스템
+- 12업적 추가 (168→180): v20_interval_master/v20_interval_perfect/v20_pedal_expert/v20_composer/v20_care_complete/v20_breathe_calm/v20_theory_explorer/v20_theory_master/v20_skill_assess/v20_history_explorer/v20_quiz11/v20_172songs
+
+#### 키보드 단축키
+- +8종: Shift+Q(음정청음)/W(페달)/E(작곡)/R(관리)/T(불안코치)/Y(마인드맵)/Z(스킬평가)/X(역사)
+
+### Phase 3. 품질팀 검증
+- JS 구문 검사: **PASS** (node --check)
+- 괄호 균형: **ALL BALANCED** — ( 0 ) { 0 } [ 0 ]
+- CDN 참조: 0건
+- 개인정보: 0건
+- 하단 고정 네비바: 0건
+- piano-v3.html v20 SEO+스크립트태그 확인
+- sw.js v19→v20 캐시+v20 자동주입 확인
+- manifest.json v20 60종 shortcuts 확인
+- index.html v20 갱신 확인
+
+### Phase 4. 마무리
+- 커밋: [AUTO] 2026-07-14 piano v20.0
+- v20_patch.js 신규 생성 (1315줄 ~73.9KB)
+- piano-v3.html SEO+스크립트태그 v20 갱신
+- sw.js v19→v20 캐시+자동주입
+- manifest.json v20 8종 shortcuts 추가 (총60종)
+- index.html v20 갱신
+
+| 항목 | v19 | v20 | 변화 |
+|------|-----|-----|------|
+| 곡 수 | 162 | 172 | +10 |
+| 업적 | 168 | 180 | +12 |
+| 퀴즈 | 150 | 165 | +15 |
+| Canvas 기능 | 16 | 24 | +8 |
+| 키보드 단축키 | +8 | +8 | +8 |
+
+---
+
 ## 2026-07-11 — NEXTERA+PRISM 자동 에이전트 v19.0 전체 투입
 
 ### Phase 1. 벤치마킹 & 분석

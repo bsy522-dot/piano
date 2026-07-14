@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v19",
+  "name": "Piano Master v20",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 162곡 수록, 시보드리딩트레이너Canvas, 코드보이싱비교Canvas, 리듬패턴빌더Canvas, 핑거넘버링연습Canvas, 음악시대탐험기Canvas, 연습리포트생성Canvas, 튜닝매칭챌린지Canvas, 스트릭캘린더Canvas, 실시간템포트래커Canvas, AB구간반복연습기Canvas, 음악장르탐험기10종Canvas, 테크닉레이더6축Canvas, 마스터리프로그레스Canvas, 플래시카드20종Canvas, 연습타이머Canvas, 랭킹보드8등급Canvas, 퀴즈150문, 168개 업적",
+  "description": "피아노 연주 및 학습 앱 - 172곡 수록, 음정청음트레이너Canvas, 페달테크닉트레이너Canvas, 작곡워크숍Canvas, 피아노관리가이드Canvas, 공연불안코치Canvas, 음악이론마인드맵Canvas, 일일스킬평가Canvas, 피아노역사타임라인Canvas, 시보드리딩트레이너Canvas, 코드보이싱비교Canvas, 리듬패턴빌더Canvas, 핑거넘버링연습Canvas, 음악시대탐험기Canvas, 연습리포트생성Canvas, 튜닝매칭챌린지Canvas, 스트릭캘린더Canvas, 퀴즈165문, 180개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -269,6 +269,46 @@
       "name": "스트릭 캘린더",
       "url": "./piano-v3.html#v19-streak",
       "description": "연습 연속일수 Canvas 캘린더"
+    },
+    {
+      "name": "음정 청음 트레이너",
+      "url": "./piano-v3.html#v20-interval",
+      "description": "13종 음정 청음 Canvas 퀴즈"
+    },
+    {
+      "name": "페달 테크닉",
+      "url": "./piano-v3.html#v20-pedal",
+      "description": "3종 페달 테크닉 Canvas 트레이너"
+    },
+    {
+      "name": "작곡 워크숍",
+      "url": "./piano-v3.html#v20-compose",
+      "description": "32노트 작곡 Canvas 워크숍"
+    },
+    {
+      "name": "피아노 관리",
+      "url": "./piano-v3.html#v20-care",
+      "description": "12항목 피아노 관리 Canvas 가이드"
+    },
+    {
+      "name": "공연 불안 코치",
+      "url": "./piano-v3.html#v20-anxiety",
+      "description": "호흡 운동 Canvas 공연불안 코치"
+    },
+    {
+      "name": "이론 마인드맵",
+      "url": "./piano-v3.html#v20-mindmap",
+      "description": "6분야 음악이론 Canvas 마인드맵"
+    },
+    {
+      "name": "일일 스킬 평가",
+      "url": "./piano-v3.html#v20-skill",
+      "description": "6스킬 레이더 Canvas 일일 평가"
+    },
+    {
+      "name": "피아노 역사",
+      "url": "./piano-v3.html#v20-history",
+      "description": "12마일스톤 피아노 역사 Canvas 타임라인"
     }
   ],
   "icons": [
