@@ -1157,3 +1157,121 @@ v14_patch.js: 신규 (자기완결형 IIFE 패치 모듈)
 - 키보드 단축키 8종: Shift+R/P/B/Y/E/H/G/O
 - 업적 12개 추가 (120→132)
 - AUTO_REPORT.md 갱신
+
+---
+
+## 2026-07-17 — NEXTERA+PRISM 자동 에이전트 v21.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+
+| 비교 대상 | 강점 분석 | Piano Master 반영 |
+|-----------|-----------|-------------------|
+| Simply Piano | 코드 진행 학습 경로, 실시간 피드백 | 코드진행빌더Canvas: 8패턴 시각화 빌더 |
+| Flowkey | 연습 분석 대시보드, 진도 추적 | 연습로그분석기Canvas: 7일 데이터 바 차트 + 연습일지 다이어리 |
+| Piano Tiles | 게이미피케이션, 메모리 챌린지 | 음악기호매칭게임Canvas: 12쌍 메모리 매칭 + 초견연주챌린지 |
+
+#### 현재 스펙 (v20.0 기준)
+- 172곡, 퀴즈 165문(v1-v11), 업적 180개, Canvas 기능 48종
+- 서비스 워커 v20, 패치 v7-v20
+
+#### 경쟁력 갭 식별
+1. **코드 진행 학습**: Simply Piano 대비 인터랙티브 코드 진행 빌더 부재
+2. **연습 분석**: Flowkey 대비 연습 데이터 시각화/분석 미흡
+3. **게이미피케이션 확장**: 메모리 매칭 등 미니게임 부족
+4. **셈여림 교육**: 다이나믹 레벨 인터랙티브 트레이너 부재
+5. **악보 리터러시**: 악보 기호 종합 가이드 미비
+
+### Phase 2. 개발 투입 (풀 팀)
+
+#### 2-1. 새 Canvas 기능 8종 (v21_patch.js)
+
+| # | 기능명 | Canvas 유형 | 설명 |
+|---|--------|-------------|------|
+| 1 | 코드진행빌더 | 바 차트 + 인터랙티브 | I-IV-V-I 등 8패턴 코드 진행 시각화 빌더 |
+| 2 | 연습로그분석기 | 바 차트 | 7일간 연습시간 데이터 Canvas 분석 |
+| 3 | 음악기호매칭게임 | 게임 Canvas | 12쌍 음악 기호-이름 메모리 매칭 게임 |
+| 4 | 셈여림트레이너 | 인터랙티브 | ppp~fff 8단계 다이나믹 슬라이더 Canvas |
+| 5 | 음색탐험기 | 파형 Canvas | sine/square/sawtooth 등 6종 음색 파형 시각화 |
+| 6 | 악보기호가이드 | 그리드 Canvas | 16종 악보 기호 시각적 가이드 |
+| 7 | 초견연주챌린지 | 게임 Canvas | Easy/Medium/Hard 3난이도 초견 연주 |
+| 8 | 연습일지다이어리 | 폼 + 리스트 Canvas | 연습 기록 작성/저장/조회 다이어리 |
+
+#### 2-2. 신규 곡 10곡 (s173-s182, 172→182곡)
+
+| ID | 곡명 | 작곡가 |
+|----|------|--------|
+| s173 | Pathetique Sonata 2nd Mvt | Beethoven |
+| s174 | Nocturne Op.48 No.1 | Chopin |
+| s175 | Traumerei | Schumann |
+| s176 | Spring Song | Mendelssohn |
+| s177 | Waltz Op.39 No.15 | Brahms |
+| s178 | Swan Lake Theme | Tchaikovsky |
+| s179 | Sarabande | Handel |
+| s180 | Jeux d'eau | Ravel |
+| s181 | Sonata K.141 | Scarlatti |
+| s182 | Pavane | Faure |
+
+#### 2-3. 퀴즈 v12 (15문, 165→180문)
+- 셈여림 기호(pp), 소나타 형식, 장3화음 구성, 스타카토 정의, 온음표 박수
+- 페르마타 의미, 알베르티 베이스, 반음 수(옥타브), 안단테 템포
+- 감3화음, D.C. al Fine, A4 튜닝(440Hz), 셋잇단음표, 드뷔시 사조, 부점 계산
+
+#### 2-4. 업적 12개 추가 (180→192개)
+
+| 업적 ID | 조건 |
+|---------|------|
+| v21_chord_builder | 코드진행빌더 사용 |
+| v21_practice_logger | 연습로그분석기 사용 |
+| v21_memory_master | 음악기호매칭 게임 완료 |
+| v21_dynamics_pro | 셈여림트레이너 사용 |
+| v21_timbre_explorer | 음색탐험기 사용 |
+| v21_score_reader | 악보기호가이드 사용 |
+| v21_sight_ace | 초견연주 챌린지 완료 |
+| v21_diary_writer | 연습일지 작성 |
+| v21_quiz12_s | 퀴즈 v12 시작 |
+| v21_quiz12_clear | 퀴즈 v12 전문 정답 |
+| v21_all_features | v21 전 기능 사용 |
+| v21_182songs | 182곡 전곡 완주 |
+
+#### 2-5. SFX 13종 (Web Audio API)
+- chordBuild, logView, matchFlip, matchSuccess, matchFail, dynamicHit
+- timbreChange, scoreView, sightCorrect, sightWrong, diaryWrite, quizCorrect12, quizWrong12
+
+#### 2-6. 키보드 단축키 8종
+- Shift+A: 코드진행빌더, Shift+S: 연습로그분석기
+- Shift+D: 음악기호매칭, Shift+F: 셈여림트레이너
+- Shift+G: 음색탐험기, Shift+H: 악보기호가이드
+- Shift+J: 초견연주챌린지, Shift+K: 연습일지다이어리
+
+### Phase 3. 품질 검증
+
+| 항목 | 결과 |
+|------|------|
+| JS 문법 검증 (node -c) | PASS |
+| 외부 CDN 사용 | 없음 (PASS) |
+| 개인정보 노출 | 없음 (PASS) |
+| 하단 고정 네비바 | 없음 (PASS) |
+| HTML entities 따옴표 | 적용 완료 |
+| IIFE 패턴 준수 | PASS |
+| Nav 버튼 기존 바 주입 | PASS |
+| setTimeout 지연 초기화 | 5500ms (PASS) |
+
+### Phase 4. 파일 변경 내역
+
+- v21_patch.js: 신규 생성 (~1100행), 8 Canvas + 10곡 + 퀴즈v12(15문) + 업적12 + SFX13 + 단축키8
+- piano-v3.html: SEO 메타 태그 v20→v21 (title, description, keywords, OG, Twitter)
+- index.html: 타이틀 v20→v21
+- sw.js: CACHE_NAME v20→v21, ASSETS에 v21_patch.js 추가, fetch 핸들러 v21 자동주입 추가
+- manifest.json: v21 설명 업데이트 + shortcuts 8종 추가 (60→68)
+- 키보드 단축키 8종: Shift+A/S/D/F/G/H/J/K
+- 업적 12개 추가 (180→192)
+- AUTO_REPORT.md 갱신
+
+### 스펙 요약 (v21.0)
+- 총 곡 수: 182곡
+- 퀴즈: 180문 (v1~v12)
+- 업적: 192개
+- Canvas 기능: 56종
+- SFX: v21 13종 포함 다수
+- 패치: v7~v21 (15개)
+- PWA 숏컷: 68개
