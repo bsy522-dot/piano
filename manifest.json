@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v21",
+  "name": "Piano Master v22",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 182곡 수록, 코드진행빌더Canvas, 연습로그분석기Canvas, 음악기호매칭게임Canvas, 셈여림트레이너Canvas, 음색탐험기Canvas, 악보기호가이드Canvas, 초견연주챌린지Canvas, 연습일지다이어리Canvas, 음정청음트레이너Canvas, 페달테크닉트레이너Canvas, 작곡워크숍Canvas, 피아노관리가이드Canvas, 공연불안코치Canvas, 음악이론마인드맵Canvas, 일일스킬평가Canvas, 피아노역사타임라인Canvas, 퀴즈180문, 192개 업적",
+  "description": "피아노 연주 및 학습 앱 - 192곡 수록, 감정표현매트릭스Canvas, 즉흥연주패턴생성기Canvas, 인터벌타워Canvas, 하모닉분석기Canvas, 에너지매니저Canvas, 핑거짐Canvas, 무드보드Canvas, 마일스톤로드맵Canvas, 코드진행빌더Canvas, 연습로그분석기Canvas, 셈여림트레이너Canvas, 음색탐험기Canvas, 초견연주챌린지Canvas, 음정청음트레이너Canvas, 페달테크닉트레이너Canvas, 작곡워크숍Canvas, 피아노관리가이드Canvas, 공연불안코치Canvas, 음악이론마인드맵Canvas, 일일스킬평가Canvas, 피아노역사타임라인Canvas, 퀴즈195문, 204개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -349,6 +349,46 @@
       "name": "연습 일지",
       "url": "./piano-v3.html#v21-diary",
       "description": "연습 기록 Canvas 다이어리"
+    },
+    {
+      "name": "감정 표현 매트릭스",
+      "url": "./piano-v3.html#v22-emotion",
+      "description": "8종 감정 표현 Canvas 매트릭스"
+    },
+    {
+      "name": "즉흥연주 생성기",
+      "url": "./piano-v3.html#v22-improv",
+      "description": "6스케일 즉흥 패턴 Canvas 생성기"
+    },
+    {
+      "name": "인터벌 타워",
+      "url": "./piano-v3.html#v22-interval",
+      "description": "7종 음정 타워 쌓기 Canvas 게임"
+    },
+    {
+      "name": "하모닉 분석기",
+      "url": "./piano-v3.html#v22-harmony",
+      "description": "8종 코드진행 Canvas 하모닉 분석"
+    },
+    {
+      "name": "에너지 매니저",
+      "url": "./piano-v3.html#v22-energy",
+      "description": "5존 연습 에너지 Canvas 매니저"
+    },
+    {
+      "name": "핑거 짐",
+      "url": "./piano-v3.html#v22-finger-gym",
+      "description": "8종 핑거 운동 Canvas 트레이너"
+    },
+    {
+      "name": "무드보드",
+      "url": "./piano-v3.html#v22-mood",
+      "description": "6카테고리 연습 무드 Canvas 보드"
+    },
+    {
+      "name": "마일스톤 로드맵",
+      "url": "./piano-v3.html#v22-milestone",
+      "description": "12마일스톤 학습 Canvas 로드맵"
     }
   ],
   "icons": [
