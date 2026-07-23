@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v22",
+  "name": "Piano Master v23",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 192곡 수록, 감정표현매트릭스Canvas, 즉흥연주패턴생성기Canvas, 인터벌타워Canvas, 하모닉분석기Canvas, 에너지매니저Canvas, 핑거짐Canvas, 무드보드Canvas, 마일스톤로드맵Canvas, 코드진행빌더Canvas, 연습로그분석기Canvas, 셈여림트레이너Canvas, 음색탐험기Canvas, 초견연주챌린지Canvas, 음정청음트레이너Canvas, 페달테크닉트레이너Canvas, 작곡워크숍Canvas, 피아노관리가이드Canvas, 공연불안코치Canvas, 음악이론마인드맵Canvas, 일일스킬평가Canvas, 피아노역사타임라인Canvas, 퀴즈195문, 204개 업적",
+  "description": "피아노 연주 및 학습 앱 - 202곡 수록, 장르마스터리분석기Canvas, 건반밸런스트레이너Canvas, 감정곡선에디터Canvas, 코드전환타이머Canvas, 아르페지오패턴빌더Canvas, 협주곡가이드Canvas, 리듬정밀도매트릭스Canvas, 연주스타일DNACanvas, 감정표현매트릭스Canvas, 즉흥연주패턴생성기Canvas, 인터벌타워Canvas, 하모닉분석기Canvas, 에너지매니저Canvas, 핑거짐Canvas, 무드보드Canvas, 마일스톤로드맵Canvas, 퀴즈210문, 216개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -389,6 +389,46 @@
       "name": "마일스톤 로드맵",
       "url": "./piano-v3.html#v22-milestone",
       "description": "12마일스톤 학습 Canvas 로드맵"
+    },
+    {
+      "name": "장르 마스터리",
+      "url": "./piano-v3.html#v23-genre",
+      "description": "10종 장르 마스터리 Canvas 분석기"
+    },
+    {
+      "name": "건반 밸런스",
+      "url": "./piano-v3.html#v23-balance",
+      "description": "좌우 건반 사용량 Canvas 분석"
+    },
+    {
+      "name": "감정 곡선 에디터",
+      "url": "./piano-v3.html#v23-curve",
+      "description": "8종 감정 곡선 Canvas 에디터"
+    },
+    {
+      "name": "코드 전환 타이머",
+      "url": "./piano-v3.html#v23-chord-timer",
+      "description": "12코드 전환 반응속도 Canvas 측정"
+    },
+    {
+      "name": "아르페지오 빌더",
+      "url": "./piano-v3.html#v23-arpeggio",
+      "description": "8종 아르페지오 패턴 Canvas 빌더"
+    },
+    {
+      "name": "협주곡 가이드",
+      "url": "./piano-v3.html#v23-concerto",
+      "description": "10대 피아노 협주곡 Canvas 가이드"
+    },
+    {
+      "name": "리듬 매트릭스",
+      "url": "./piano-v3.html#v23-rhythm",
+      "description": "8박자 5템포 리듬 정밀도 Canvas 매트릭스"
+    },
+    {
+      "name": "스타일 DNA",
+      "url": "./piano-v3.html#v23-style-dna",
+      "description": "8차원 연주스타일 DNA Canvas 프로파일러"
     }
   ],
   "icons": [
