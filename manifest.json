@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v23",
+  "name": "Piano Master v24",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 202곡 수록, 장르마스터리분석기Canvas, 건반밸런스트레이너Canvas, 감정곡선에디터Canvas, 코드전환타이머Canvas, 아르페지오패턴빌더Canvas, 협주곡가이드Canvas, 리듬정밀도매트릭스Canvas, 연주스타일DNACanvas, 감정표현매트릭스Canvas, 즉흥연주패턴생성기Canvas, 인터벌타워Canvas, 하모닉분석기Canvas, 에너지매니저Canvas, 핑거짐Canvas, 무드보드Canvas, 마일스톤로드맵Canvas, 퀴즈210문, 216개 업적",
+  "description": "피아노 연주 및 학습 앱 - 212곡 수록, 핑거독립트레이너Canvas, 시대별마스터클래스Canvas, 템포적응훈련Canvas, 키터치분석Canvas, 이론트리Canvas, 연습효율매니저Canvas, 피아니스트비교Canvas, 감정색채지도Canvas, 퀴즈225문, 228개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -429,6 +429,46 @@
       "name": "스타일 DNA",
       "url": "./piano-v3.html#v23-style-dna",
       "description": "8차원 연주스타일 DNA Canvas 프로파일러"
+    },
+    {
+      "name": "핑거 독립",
+      "url": "./piano-v3.html#v24-finger",
+      "description": "10손가락 독립성 드릴 Canvas 트레이너"
+    },
+    {
+      "name": "시대 마스터클래스",
+      "url": "./piano-v3.html#v24-era",
+      "description": "6시대 18작곡가 Canvas 마스터클래스"
+    },
+    {
+      "name": "템포 적응",
+      "url": "./piano-v3.html#v24-tempo",
+      "description": "BPM 적응 훈련 Canvas 분석기"
+    },
+    {
+      "name": "키터치 분석",
+      "url": "./piano-v3.html#v24-touch",
+      "description": "12반음 터치 강도 Canvas 히트맵"
+    },
+    {
+      "name": "이론 트리",
+      "url": "./piano-v3.html#v24-theory",
+      "description": "12노드 음악이론 Canvas 스킬트리"
+    },
+    {
+      "name": "연습 효율",
+      "url": "./piano-v3.html#v24-efficiency",
+      "description": "6지표 연습효율 Canvas 게이지"
+    },
+    {
+      "name": "피아니스트 비교",
+      "url": "./piano-v3.html#v24-pianist",
+      "description": "10피아니스트 6축 Canvas 레이더비교"
+    },
+    {
+      "name": "감정 색채지도",
+      "url": "./piano-v3.html#v24-emotion",
+      "description": "12키×8감정 Canvas 색채히트맵"
     }
   ],
   "icons": [
