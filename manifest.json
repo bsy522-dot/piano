@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v24",
+  "name": "Piano Master v25",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 212곡 수록, 핑거독립트레이너Canvas, 시대별마스터클래스Canvas, 템포적응훈련Canvas, 키터치분석Canvas, 이론트리Canvas, 연습효율매니저Canvas, 피아니스트비교Canvas, 감정색채지도Canvas, 퀴즈225문, 228개 업적",
+  "description": "피아노 연주 및 학습 앱 - 222곡 수록, 스케일마스터리레이스Canvas, 포지션옵티마이저Canvas, 레퍼토리진행맵Canvas, 하루연습최적화Canvas, 음악용어탐험기Canvas, 멜로디메모리챌린지Canvas, 악보해석가이드Canvas, 종합실력진단Canvas, 퀴즈240문, 240개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -469,6 +469,46 @@
       "name": "감정 색채지도",
       "url": "./piano-v3.html#v24-emotion",
       "description": "12키×8감정 Canvas 색채히트맵"
+    },
+    {
+      "name": "스케일 마스터리",
+      "url": "./piano-v3.html#v25-scale",
+      "description": "12스케일 속도+정확도 Canvas 레이스"
+    },
+    {
+      "name": "포지션 옵티마이저",
+      "url": "./piano-v3.html#v25-position",
+      "description": "8포지션 3축 Canvas 최적화"
+    },
+    {
+      "name": "레퍼토리 맵",
+      "url": "./piano-v3.html#v25-repertoire",
+      "description": "10카테고리 222곡 Canvas 진행맵"
+    },
+    {
+      "name": "하루 최적화",
+      "url": "./piano-v3.html#v25-daily",
+      "description": "7일×18시간 Canvas 연습히트맵"
+    },
+    {
+      "name": "음악 용어",
+      "url": "./piano-v3.html#v25-glossary",
+      "description": "26용어 5카테고리 Canvas 탐험기"
+    },
+    {
+      "name": "멜로디 메모리",
+      "url": "./piano-v3.html#v25-memory",
+      "description": "음정 기억 Canvas 챌린지 게임"
+    },
+    {
+      "name": "악보 해석",
+      "url": "./piano-v3.html#v25-score",
+      "description": "8섹션 악보기호 Canvas 가이드"
+    },
+    {
+      "name": "실력 진단",
+      "url": "./piano-v3.html#v25-diagnosis",
+      "description": "8차원 Canvas 레이더 종합진단"
     }
   ],
   "icons": [
