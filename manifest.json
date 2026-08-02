@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v25",
+  "name": "Piano Master v26",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 222곡 수록, 스케일마스터리레이스Canvas, 포지션옵티마이저Canvas, 레퍼토리진행맵Canvas, 하루연습최적화Canvas, 음악용어탐험기Canvas, 멜로디메모리챌린지Canvas, 악보해석가이드Canvas, 종합실력진단Canvas, 퀴즈240문, 240개 업적",
+  "description": "피아노 연주 및 학습 앱 - 232곡 수록, 연주퍼포먼스대시보드Canvas, 적응형난이도엔진Canvas, 녹음비교재생기Canvas, 파티클이펙트엔진Canvas, 커리큘럼학습경로Canvas, 마이크음정감지Canvas, 글로벌리더보드Canvas, 약점구간분석기Canvas, 퀴즈255문, 252개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -509,6 +509,46 @@
       "name": "실력 진단",
       "url": "./piano-v3.html#v25-diagnosis",
       "description": "8차원 Canvas 레이더 종합진단"
+    },
+    {
+      "name": "퍼포먼스 분석",
+      "url": "./piano-v3.html#v26-perf",
+      "description": "실시간 연주 퍼포먼스 Canvas 대시보드"
+    },
+    {
+      "name": "적응형 난이도",
+      "url": "./piano-v3.html#v26-adaptive",
+      "description": "실력 기반 난이도 자동 Canvas 조절"
+    },
+    {
+      "name": "녹음 비교",
+      "url": "./piano-v3.html#v26-record",
+      "description": "녹음 재생 듀얼 피아노롤 Canvas 비교"
+    },
+    {
+      "name": "파티클 이펙트",
+      "url": "./piano-v3.html#v26-particle",
+      "description": "6종 파티클 콤보 Canvas 프리뷰"
+    },
+    {
+      "name": "커리큘럼",
+      "url": "./piano-v3.html#v26-curriculum",
+      "description": "6트랙 8레벨 스킬트리 Canvas 학습경로"
+    },
+    {
+      "name": "음정 감지",
+      "url": "./piano-v3.html#v26-pitch",
+      "description": "마이크 기반 음정 감지 Canvas 트레이너"
+    },
+    {
+      "name": "리더보드",
+      "url": "./piano-v3.html#v26-leaderboard",
+      "description": "글로벌 티어 리더보드 Canvas 챌린지"
+    },
+    {
+      "name": "약점 분석",
+      "url": "./piano-v3.html#v26-weakness",
+      "description": "곡별 약점 구간 Canvas 분석기"
     }
   ],
   "icons": [
