@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v27",
+  "name": "Piano Master v28",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 242곡 수록, 인터벌이어트레이닝Canvas, 코드보이싱워크숍Canvas, 핑거독립진단Canvas, 연습에너지맵Canvas, 피아노음색팔레트Canvas, 모티프변형연구소Canvas, 전조마스터리트래커Canvas, 종합피아노IQ대시보드Canvas, 퀴즈270문, 264개 업적",
+  "description": "피아노 연주 및 학습 앱 - 252곡 수록, 코드진행분석기Canvas, 초견속도테스트Canvas, 연습스트릭히트맵Canvas, 셈여림마스터리Canvas, 조표탐험기Canvas, 리듬세분화Canvas, 작곡가매칭퀴즈Canvas, 종합음악성대시보드Canvas, 퀴즈285문, 276개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -589,6 +589,46 @@
       "name": "종합 피아노 IQ",
       "url": "./piano-v3.html#v27-iq",
       "description": "종합 피아노 IQ Canvas 대시보드"
+    },
+    {
+      "name": "코드 진행 분석기",
+      "url": "./piano-v3.html#v28-chord-prog",
+      "description": "코드 진행 패턴 Canvas 분석기"
+    },
+    {
+      "name": "초견 속도 테스트",
+      "url": "./piano-v3.html#v28-sight-speed",
+      "description": "초견 속도 Canvas 테스트"
+    },
+    {
+      "name": "연습 스트릭 히트맵",
+      "url": "./piano-v3.html#v28-streak",
+      "description": "연습 연속기록 Canvas 히트맵"
+    },
+    {
+      "name": "셈여림 마스터리",
+      "url": "./piano-v3.html#v28-dynamics",
+      "description": "셈여림 다이나믹 Canvas 마스터리"
+    },
+    {
+      "name": "조표 탐험기",
+      "url": "./piano-v3.html#v28-keysig",
+      "description": "조표 학습 Canvas 탐험기"
+    },
+    {
+      "name": "리듬 세분화",
+      "url": "./piano-v3.html#v28-rhythm-sub",
+      "description": "리듬 세분화 Canvas 트레이너"
+    },
+    {
+      "name": "작곡가 매칭 퀴즈",
+      "url": "./piano-v3.html#v28-composer",
+      "description": "작곡가 매칭 Canvas 퀴즈"
+    },
+    {
+      "name": "종합 음악성 대시보드",
+      "url": "./piano-v3.html#v28-musicianship",
+      "description": "종합 음악성 Canvas 대시보드"
     }
   ],
   "icons": [
