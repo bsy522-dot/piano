@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v28",
+  "name": "Piano Master v29",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 252곡 수록, 코드진행분석기Canvas, 초견속도테스트Canvas, 연습스트릭히트맵Canvas, 셈여림마스터리Canvas, 조표탐험기Canvas, 리듬세분화Canvas, 작곡가매칭퀴즈Canvas, 종합음악성대시보드Canvas, 퀴즈285문, 276개 업적",
+  "description": "피아노 연주 및 학습 앱 - 262곡 수록, 화성진행시뮬레이터Canvas, 페달링마스터클래스Canvas, 음악형식구조분석기Canvas, 아티큘레이션가이드Canvas, 조옮김워크벤치Canvas, 건반압력히트맵Canvas, 음악사퀴즈배틀Canvas, 종합연주성장리포트Canvas, 퀴즈300문, 288개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -629,6 +629,46 @@
       "name": "종합 음악성 대시보드",
       "url": "./piano-v3.html#v28-musicianship",
       "description": "종합 음악성 Canvas 대시보드"
+    },
+    {
+      "name": "화성진행 시뮬레이터",
+      "url": "./piano-v3.html#v29-harmony-sim",
+      "description": "8종 화성진행 Canvas 시뮬레이터"
+    },
+    {
+      "name": "페달링 마스터클래스",
+      "url": "./piano-v3.html#v29-pedal",
+      "description": "8종 페달링 테크닉 Canvas 마스터클래스"
+    },
+    {
+      "name": "음악형식 분석기",
+      "url": "./piano-v3.html#v29-form",
+      "description": "10종 음악형식 구조 Canvas 분석기"
+    },
+    {
+      "name": "아티큘레이션 가이드",
+      "url": "./piano-v3.html#v29-artic",
+      "description": "12종 아티큘레이션 Canvas 가이드"
+    },
+    {
+      "name": "조옮김 워크벤치",
+      "url": "./piano-v3.html#v29-transpose",
+      "description": "12키 조옮김 Canvas 워크벤치"
+    },
+    {
+      "name": "건반압력 히트맵",
+      "url": "./piano-v3.html#v29-pressure",
+      "description": "61건반 압력 Canvas 히트맵"
+    },
+    {
+      "name": "음악사 퀴즈배틀",
+      "url": "./piano-v3.html#v29-history",
+      "description": "5라운드 음악사 Canvas 퀴즈배틀"
+    },
+    {
+      "name": "종합 성장 리포트",
+      "url": "./piano-v3.html#v29-growth",
+      "description": "8KPI 종합 연주 Canvas 성장리포트"
     }
   ],
   "icons": [

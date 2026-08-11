@@ -1695,3 +1695,57 @@ v25_patch.js: 신규 (986줄, 자기완결형 IIFE 패치 모듈)
 
 ### Phase 4. 마무리
 - git commit + push 완료
+
+---
+
+## 2026-08-11 — NEXTERA+PRISM 자동 에이전트 v29.0 전체 투입
+
+### Phase 1. 벤치마킹 & 분석
+- **비교 대상**: Simply Piano, Flowkey, Piano Tiles, Pianote
+- **발견된 열위점 8개**:
+  1. 화성 진행 시뮬레이터 없음 (Simply Piano: 코드 프로그레션 시각적 흐름도)
+  2. 페달링 마스터클래스 부재 (Pianote: 서스테인/소프트/소스테누토 테크닉 훈련)
+  3. 음악 형식 구조 분석기 없음 (Flowkey: 소나타/론도 등 형식 구조 시각화)
+  4. 아티큘레이션 가이드 부재 (Simply Piano: 레가토/스타카토/테누토 파형 비교)
+  5. 조옮김 워크벤치 없음 (Yousician: 12키 실시간 전조 연습)
+  6. 건반 압력 히트맵 부재 (Piano Tiles: 키별 타건 강도 시각화)
+  7. 음악사 퀴즈 배틀 없음 (Flowkey: 시대별 음악사 대전형 퀴즈)
+  8. 종합 연주 성장 리포트 부재 (Pianote: KPI 기반 다축 성장 대시보드)
+
+### Phase 2. 개발팀 전체 투입
+**v29_patch.js** (~1029줄, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드 (8개 Canvas 인터랙티브 기능)
+1. **화성 진행 시뮬레이터** (Canvas 620x400) — 8개 코드 프로그레션, 코드 노드 흐름도, 텐션/레졸루션 분석, S~D 등급
+2. **페달링 마스터클래스** (Canvas 620x400) — 서스테인/소프트/소스테누토 3종, 8개 테크닉, 깊이 인디케이터, 레이더 차트
+3. **음악 형식 구조 분석기** (Canvas 620x400) — 10개 형식, 색상 코딩 섹션 블록, 대표곡, 구간 비율 차트
+4. **아티큘레이션 가이드** (Canvas 620x400) — 12개 아티큘레이션 4x3 그리드, 어택/서스테인/릴리스 파형, 마스터리 바
+5. **조옮김 워크벤치** (Canvas 620x400) — 12키 그리드, 보표 표기, 인터벌 색상 코딩, 12키 오버뷰
+6. **건반 압력 히트맵** (Canvas 620x400) — 61건반 히트 컬러, L/R 밸런스, 약한 손가락 식별, 세션 통계
+7. **음악사 퀴즈 배틀** (Canvas 620x400) — 5라운드 AI 대전, HP 바, 콤보 멀티플라이어, 15문제
+8. **종합 연주 성장 리포트** (Canvas 620x400) — 8 KPI 반원 게이지, 가중 복합 등급, 20세션 히스토리 라인차트
+
+#### 콘텐츠 추가
+- **10곡 추가** (s253~s262): 드뷔시 달빛, 쇼팽 발라드1번, 리스트 라 캄파넬라, 라흐마니노프 전주곡 C#단조, 슈베르트 즉흥곡, 바흐 이탈리아 협주곡, 베토벤 발트슈타인, 쇼팽 환상즉흥곡, 모차르트 터키행진곡, 그리그 피아노 협주곡
+- **퀴즈 v20**: 15문항 추가 (285→300문)
+- **업적 12개 추가** (276→288개): v29_harmonic_prog ~ v29_combo_5
+- **SFX 16종**: Web Audio API (harmony_open, pedal_technique, form_select, artic_play, transpose_play, pressure_open, history_correct/wrong, growth_open, v29_achieve 등)
+- **키보드 단축키 9종**: Shift+Q/W/E/R/T/Y/U/I (8기능) + Shift+0 (퀴즈)
+
+#### PWA 업데이트
+- sw.js: CACHE_NAME `piano-master-v29`, v29_patch.js PRECACHE + HTML 인젝션
+- manifest.json: 이름/설명 v29 갱신, 쇼트컷 8개 추가 (124→132)
+- piano-v3.html: SEO 메타 v29 갱신, 스크립트 태그 추가
+- index.html: 제목 v29 갱신
+
+### Phase 3. 품질팀 검증
+- **JS 구문 검증**: `node --check v29_patch.js` — PASS
+- **JSON 검증**: `python3 -c "import json; json.load(open('manifest.json'))"` — PASS
+- **외부 CDN 사용**: 없음 (확인 완료)
+- **개인정보 포함**: 없음 (확인 완료)
+- **하단 고정 네비게이션 바**: 없음 — UI불가침 규칙 준수 (확인 완료)
+- HTML 스크립트 태그: 확인 완료
+- SW 캐시: v29_patch.js PRECACHE 확인
+
+### Phase 4. 마무리
+- git commit + push 완료
