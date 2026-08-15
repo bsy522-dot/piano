@@ -1,7 +1,7 @@
 {
-  "name": "Piano Master v29",
+  "name": "Piano Master v30",
   "short_name": "Piano",
-  "description": "피아노 연주 및 학습 앱 - 262곡 수록, 화성진행시뮬레이터Canvas, 페달링마스터클래스Canvas, 음악형식구조분석기Canvas, 아티큘레이션가이드Canvas, 조옮김워크벤치Canvas, 건반압력히트맵Canvas, 음악사퀴즈배틀Canvas, 종합연주성장리포트Canvas, 퀴즈300문, 288개 업적",
+  "description": "피아노 연주 및 학습 앱 - 272곡 수록, 리듬패턴작곡기Canvas, 손가락번호최적화기Canvas, 음악이론개념맵Canvas, 연습집중도분석기Canvas, 터치감도프로파일러Canvas, 감정음악매핑Canvas, 듀엣파트분배기Canvas, 종합피아니스트레벨진단Canvas, 퀴즈315문, 300개 업적",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
@@ -669,6 +669,46 @@
       "name": "종합 성장 리포트",
       "url": "./piano-v3.html#v29-growth",
       "description": "8KPI 종합 연주 Canvas 성장리포트"
+    },
+    {
+      "name": "리듬 패턴 작곡기",
+      "url": "./piano-v3.html#v30-rhythm",
+      "description": "8종 리듬 패턴 비트 그리드 편집기"
+    },
+    {
+      "name": "손가락번호 최적화기",
+      "url": "./piano-v3.html#v30-finger",
+      "description": "12조 스케일 최적 운지법 가이드"
+    },
+    {
+      "name": "음악이론 개념맵",
+      "url": "./piano-v3.html#v30-theory",
+      "description": "10개 핵심 이론 노드 네트워크"
+    },
+    {
+      "name": "연습 집중도 분석기",
+      "url": "./piano-v3.html#v30-focus",
+      "description": "7일x8시간대 연습 히트맵"
+    },
+    {
+      "name": "터치 감도 프로파일러",
+      "url": "./piano-v3.html#v30-touch",
+      "description": "5영역x8벨로시티 터치 매트릭스"
+    },
+    {
+      "name": "감정-음악 매핑 도구",
+      "url": "./piano-v3.html#v30-emotion",
+      "description": "12감정 8요소 Radar 차트"
+    },
+    {
+      "name": "듀엣 파트 분배기",
+      "url": "./piano-v3.html#v30-duet",
+      "description": "Primo/Secondo 6축 Radar 역할 분석"
+    },
+    {
+      "name": "피아니스트 레벨 진단",
+      "url": "./piano-v3.html#v30-level",
+      "description": "8KPI 반원게이지 종합 등급"
     }
   ],
   "icons": [
