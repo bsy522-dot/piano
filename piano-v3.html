@@ -2978,6 +2978,7 @@ class PianoApp {
 let app;
 function init() {
   app = new PianoApp();
+  window.app = app;
   app.init();
 }
 window.addEventListener('load', init);
