@@ -1017,7 +1017,7 @@ function buildPianoHistoryUI(){
 
       var sel=MILESTONES[selMilestone];
       ctx.fillStyle='var(--surface2,#1a2036)';
-      var boxY=above?30:H-90;
+      var boxY=(selMilestone%2===0)?30:H-90;
       ctx.fillRect(20,boxY,W-40,60);
       ctx.strokeStyle='#4a7dff40';ctx.lineWidth=1;ctx.strokeRect(20,boxY,W-40,60);
       ctx.fillStyle='#eab308';ctx.font='bold 12px sans-serif';ctx.fillText(sel.year+' - '+sel.title,30,boxY+20);
